@@ -6,4 +6,10 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Login</string>
+
+    <string name="TAG">Sistem Keamanan Rumah</string>
+    <string name="api_site_url">http://192.168.0.101/keamananrumah/index.php/api/</string>
+    <string name="api_login">verifikasi/</string>
+
+
 </resources>

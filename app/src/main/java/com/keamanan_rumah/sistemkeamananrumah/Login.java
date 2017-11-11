@@ -11,9 +11,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,8 +35,10 @@ public class Login extends AppCompatActivity {
     String api_site_url,api_login;
     String TAG;
     String status_cek,message,message_severity;
+    String id, username, nama, tipe, API_KEY, secure_key, waktu;
     
     Boolean loaddata;
+    String JSON_data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +95,7 @@ public class Login extends AppCompatActivity {
             Log.d(TAG, "Do in background");
             ServiceHandler sh = new ServiceHandler();
             String url = api_site_url.concat(api_login);
-            String JSON_data = sh.makeServiceCall(url, ServiceHandler.POST, data_login);
+            JSON_data = sh.makeServiceCall(url, ServiceHandler.POST, data_login);
             if(JSON_data!=null){
                 try {
                     JSONObject jsonObj = new JSONObject(JSON_data);
@@ -99,6 +103,17 @@ public class Login extends AppCompatActivity {
                     status_cek = response.getString("status_cek");
                     message = response.getString("message");
                     message_severity = response.getString("message_severity");
+                    //--
+                    JSONArray data_user = response.getJSONArray("data_user");
+                    JSONObject objUser = data_user.getJSONObject(0);
+                    id = objUser.getString("id");
+                    username = objUser.getString("username");
+                    nama = objUser.getString("nama");
+                    tipe = objUser.getString("tipe");
+                    API_KEY = objUser.getString("API_KEY");
+                    secure_key = objUser.getString("secure_key");
+                    waktu = objUser.getString("waktu");
+                    //--
                 } catch (final JSONException e) {
                     Log.e(TAG, e.getMessage());
                 }
@@ -122,6 +137,20 @@ public class Login extends AppCompatActivity {
                     tvNotif.setText(message);
                     editUsername.setText("");
                     editPass.setText("");
+                    Toast.makeText(
+                            getApplicationContext(),
+                            "ID : " + id + "\n" +
+                            "Username : " + username + "\n" +
+                            "Nama : " + nama + "\n" +
+                            "Tipe : " + tipe + "\n" +
+                            "API_KEY : " + API_KEY + "\n" +
+                            "Sec : " + secure_key + "\n"+
+                            "Waktu : " + waktu + "\n",
+                            Toast.LENGTH_LONG
+                    ).show();
+                    Intent i = new Intent(Login.this, RootActivity.class);
+                    i.putExtra("JSON_data",JSON_data);
+                    startActivity(i);
                 }else{
                     tvNotif.setText(message);
                 }

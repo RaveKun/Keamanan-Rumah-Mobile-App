@@ -8,8 +8,13 @@
     <string name="title_activity_login">Login</string>
 
     <string name="TAG">Sistem Keamanan Rumah</string>
-    <string name="api_site_url">http://192.168.0.101/keamananrumah/index.php/api/</string>
+    <string name="api_site_url">http://192.168.0.100/keamananrumah/index.php/api/</string>
     <string name="api_login">verifikasi/</string>
+    <string name="api_daftar">verifikasi_daftar/</string>
+    <string name="title_activity_root">RootActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

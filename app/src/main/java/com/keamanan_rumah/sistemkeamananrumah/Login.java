@@ -2,6 +2,7 @@ package com.keamanan_rumah.sistemkeamananrumah;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -44,6 +45,9 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+
+
         TAG = getResources().getString(R.string.TAG);
         api_site_url = getResources().getString(R.string.api_site_url);
         api_login = getResources().getString(R.string.api_login);

@@ -2,11 +2,8 @@ package com.keamanan_rumah.sistemkeamananrumah;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -81,7 +78,7 @@ public class RootActivity extends AppCompatActivity
             Log.e("Error Bos : ","JSON NULL");
         }
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-        tx.replace(R.id.FrameRoot, new FragmentLandingRoot());
+        tx.replace(R.id.FrameRoot, new FragmentDashboard());
         tx.commit();
     }
 

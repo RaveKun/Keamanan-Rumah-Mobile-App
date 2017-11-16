@@ -11,11 +11,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-public class FragmentLandingRoot extends Fragment {
+public class FragmentDashboard extends Fragment {
 
     TextView tvId, tvUsername, tvNama, tvTipe, tvAPIKEY, tvSecure, tvWaktu;
 
-    public FragmentLandingRoot() {}
+    public FragmentDashboard() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

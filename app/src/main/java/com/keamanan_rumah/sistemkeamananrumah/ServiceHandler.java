@@ -22,9 +22,7 @@ public class ServiceHandler {
     public final static int GET = 1;
     public final static int POST = 2;
 
-    public ServiceHandler() {
-
-    }
+    public ServiceHandler() {}
 
     public String makeServiceCall(String url, int method) {
         return this.makeServiceCall(url, method, null);
@@ -32,20 +30,16 @@ public class ServiceHandler {
 
     public String makeServiceCall(String url, int method,List<NameValuePair> params) {
         try {
-            // http client
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpEntity httpEntity = null;
             HttpResponse httpResponse = null;
-            // Checking http request method type
             if (method == POST) {
                 HttpPost httpPost = new HttpPost(url);
-                // adding post params
                 if (params != null) {
                     httpPost.setEntity(new UrlEncodedFormEntity(params));
                 }
                 httpResponse = httpClient.execute(httpPost);
             } else if (method == GET) {
-                // appending params to url
                 if (params != null) {
                     String paramString = URLEncodedUtils
                             .format(params, "utf-8");

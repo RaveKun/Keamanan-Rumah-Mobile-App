@@ -94,9 +94,9 @@ public class Daftar extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... arg0) {
             Log.d(TAG, "Do in background");
-            ServiceHandler sh = new ServiceHandler();
+            HTTPSvc sh = new HTTPSvc();
             String url = api_site_url.concat(api_daftar);
-            String JSON_data = sh.makeServiceCall(url, ServiceHandler.POST, data_daftar);
+            String JSON_data = sh.makeServiceCall(url, HTTPSvc.POST, data_daftar);
             if(JSON_data!=null){
                 try {
                     JSONObject jsonObj = new JSONObject(JSON_data);

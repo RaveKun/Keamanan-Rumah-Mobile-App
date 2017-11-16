@@ -2,7 +2,6 @@ package com.keamanan_rumah.sistemkeamananrumah;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -97,9 +96,9 @@ public class Login extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... arg0) {
             Log.d(TAG, "Do in background");
-            ServiceHandler sh = new ServiceHandler();
+            HTTPSvc sh = new HTTPSvc();
             String url = api_site_url.concat(api_login);
-            JSON_data = sh.makeServiceCall(url, ServiceHandler.POST, data_login);
+            JSON_data = sh.makeServiceCall(url, HTTPSvc.POST, data_login);
             if(JSON_data!=null){
                 try {
                     JSONObject jsonObj = new JSONObject(JSON_data);

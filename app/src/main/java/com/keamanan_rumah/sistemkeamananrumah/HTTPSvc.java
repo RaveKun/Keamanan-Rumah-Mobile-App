@@ -16,13 +16,13 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
-public class ServiceHandler {
+public class HTTPSvc {
 
     static String response = null;
     public final static int GET = 1;
     public final static int POST = 2;
 
-    public ServiceHandler() {}
+    public HTTPSvc() {}
 
     public String makeServiceCall(String url, int method) {
         return this.makeServiceCall(url, method, null);

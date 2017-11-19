@@ -80,14 +80,13 @@ public class FragmentDashboard extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
         }
 
         @Override
         protected Void doInBackground(Void... arg0) {
             Log.d(TAG, "Do in background");
             HTTPSvc sh = new HTTPSvc();
-            String url = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_dashboard));
+            String url = RootActivity.api_dashboard;
             JSON_data = sh.makeServiceCall(url, HTTPSvc.POST);
             if(JSON_data!=null){
                 try {
@@ -116,13 +115,15 @@ public class FragmentDashboard extends Fragment {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            if(loaddata){
-                tvActive.setText("User aktif : " + user_total);
-                tvBlocked.setText("User blocked : " + user_block);
-                tvRecordToday.setText("Data hari ini : " + database_today);
-                tvTotalRecord.setText("Total data : " + database_total);
-            }else{
-                Toast.makeText(getActivity().getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
+            if(isAdded()){
+                if(loaddata){
+                    tvActive.setText("User aktif : " + user_total);
+                    tvBlocked.setText("User blocked : " + user_block);
+                    tvRecordToday.setText("Data hari ini : " + database_today);
+                    tvTotalRecord.setText("Total data : " + database_total);
+                }else{
+//                    Toast.makeText(getActivity().getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
+                }
             }
         }
     }

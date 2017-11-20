@@ -15,6 +15,7 @@
     <string name="api_profil">load_detail_user/</string>
     <string name="api_update_profil">update_detail_user/</string>
     <string name="api_update_password">update_password/</string>
+    <string name="api_load_all_parent">load_all_parent/</string>
     <string name="title_activity_root">RootActivity</string>
 
     <!-- TODO: Remove or change this placeholder text -->

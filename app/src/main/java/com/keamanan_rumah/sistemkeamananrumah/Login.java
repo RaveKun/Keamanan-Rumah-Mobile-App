@@ -129,6 +129,7 @@ public class Login extends AppCompatActivity {
                     status_cek = response.getString("status_cek");
                     message = response.getString("message");
                     message_severity = response.getString("message_severity");
+                    //user
                     JSONArray data_user = response.getJSONArray("data_user");
                     JSONObject objUser = data_user.getJSONObject(0);
                     id = objUser.getString("id");

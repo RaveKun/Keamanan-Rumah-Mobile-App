@@ -1,10 +1,7 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.keamanan_rumah.sistemkeamananrumah.FragmentProfil">
-
+    android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,7 +18,7 @@
                 android:gravity="center"
                 android:textColor="#FFFFFF"
                 android:textSize="24dp"
-                android:text="PROFIL"/>
+                android:text="TAMBAH PENGGUNA"/>
         </LinearLayout>
         <!--Notif-->
         <LinearLayout
@@ -45,8 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="visible"
-            android:orientation="vertical"
-            android:paddingBottom="60dp">
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,7 +65,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                
                 android:padding="10dp"
                 android:orientation="vertical">
                 <TextView
@@ -78,18 +73,34 @@
                     android:gravity="fill_vertical"
                     android:textColor="#666"
                     android:textSize="14dp"
-                    android:text="Nama"/>
+                    android:text="Password"/>
                 <EditText
-                    android:id="@+id/etNama"
+                    android:id="@+id/etPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Nama Pengguna"
+                    android:hint="Password"
                     android:inputType="text"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                
+                android:padding="10dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="fill_vertical"
+                    android:textColor="#666"
+                    android:textSize="14dp"
+                    android:text="Tambahkan Sebagai"/>
+                <Spinner
+                    android:id="@+id/spSebagai"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:orientation="vertical">
                 <TextView
@@ -109,100 +120,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                
-                android:padding="10dp"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="fill_vertical"
-                    android:textColor="#666"
-                    android:textSize="14dp"
-                    android:text="Tipe Account"/>
-                <EditText
-                    android:id="@+id/etTipeAccount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Tipe Account"
-                    android:inputType="text"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                
-                android:padding="10dp"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="fill_vertical"
-                    android:textColor="#666"
-                    android:textSize="14dp"
-                    android:text="Tanggal Registrasi"/>
-                <EditText
-                    android:id="@+id/etTanggalRegistrasi"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Tanggal Registrasi"
-                    android:inputType="text"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                
-                android:padding="10dp"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="fill_vertical"
-                    android:textColor="#666"
-                    android:textSize="14dp"
-                    android:text="API KEY"/>
-                <EditText
-                    android:id="@+id/etApiKey"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="API KEY"
-                    android:inputType="text"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                
-                android:padding="10dp"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="fill_vertical"
-                    android:textColor="#666"
-                    android:textSize="14dp"
-                    android:text="Secure Key"/>
-                <EditText
-                    android:id="@+id/etSecureKey"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Secure Key"
-                    android:inputType="text"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <Button
                     android:id="@+id/btnSimpan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:text="Simpan"/>
-                <Button
-                    android:id="@+id/btnEdit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Edit"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>

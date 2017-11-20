@@ -1,0 +1,76 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginBottom="10dp"
+            android:background="@mipmap/background8"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:textSize="24dp"
+                android:text="DAFTAR PENGGUNA"/>
+        </LinearLayout>
+        <!--No network available-->
+        <LinearLayout
+            android:id="@+id/llNoNetwork"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:visibility="gone"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/ivNoNetwork"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="60dp"
+                android:src="@mipmap/nonetwork"
+                android:layout_gravity="center"/>
+            <TextView
+                android:id="@+id/tvNoNetwork"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="16dp"
+                android:text="Tidak dapat terhubung ke server.\n"/>
+        </LinearLayout>
+        <!--End of no network available-->
+        <LinearLayout
+            android:id="@+id/llNetworkAvailable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:orientation="vertical">
+             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="#FFFFFF"
+                android:padding="10dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/ivSuhu"
+                    android:src="@mipmap/temperature_icon"
+                    android:layout_width="128px"
+                    android:layout_height="128px" />
+                <TextView
+                    android:id="@+id/tvSuhu"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="fill_vertical"
+                    android:textColor="#666"
+                    android:textSize="20dp"
+                    android:text="DAFTAR PENGGUNA"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -2,6 +2,7 @@ package com.keamanan_rumah.sistemkeamananrumah;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -18,12 +19,25 @@ import android.view.MenuItem;
 public class RootActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
     Fragment fragment;
     Dialog dialBox;
+
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+
+    public static String pref_id;
+    public static String pref_username;
+    public static String pref_nama;
+    public static String pref_tipe;
+    public static String pref_api_key;
+    public static String pref_secure_key;
+    public static String pref_waktu;
+
     public static String id;
     public static String api_dashboard;
     public static String api_profil;
+    public static String api_update_profil;
+    public static String api_update_password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +61,21 @@ public class RootActivity extends AppCompatActivity
 
         dialBox = createDialogBox();
 
+        pref = getApplicationContext().getSharedPreferences("KEAMANAN_RUMAH", 0);
+        editor = pref.edit();
+
+        pref_id = pref.getString("ID",null);
+        pref_username = pref.getString("USERNAME",null);
+        pref_nama = pref.getString("NAMA",null);
+        pref_tipe = pref.getString("TIPE",null);
+        pref_api_key = pref.getString("API_KEY",null);
+        pref_secure_key = pref.getString("SECURE_KEY",null);
+        pref_waktu = pref.getString("WAKTU",null);
+
         api_dashboard = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_dashboard));
-        api_profil = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_profil_root));
+        api_profil = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_profil)).concat(pref_id);
+        api_update_profil = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_update_profil)).concat(pref_id);
+        api_update_password = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_update_password)).concat(pref_id);
     }
 
     @Override
@@ -104,7 +131,14 @@ public class RootActivity extends AppCompatActivity
             fragment = new FragmentDashboard();
         }else if (id == R.id.nav_profile) {
             fragment = new FragmentProfil();
+        }else if (id == R.id.nav_ubah_password) {
+            fragment = new FragmentUbahPassword();
+        }else if (id == R.id.nav_tambah_pengguna) {
+            fragment = new FragmentTambahPengguna();
+        }else if (id == R.id.nav_daftar_pengguna) {
+            fragment = new FragmentDaftarPengguna();
         }
+
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.FrameRoot, fragment);

@@ -1,8 +1,9 @@
 package com.keamanan_rumah.sistemkeamananrumah;
 
+import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -11,31 +12,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
 
 public class FragmentProfil extends Fragment {
 
-    String JSON_data;
-    boolean loaddata;
-    String user_total;
-    String user_block;
-    String database_today;
-    String database_total;
 
+    List<NameValuePair> data_profil = new ArrayList<NameValuePair>(3);
+
+    boolean loaddata;
+    ProgressDialog pDialog;
+
+    LinearLayout llNotif;
+    TextView tvNotif;
     EditText etUsername,etNama,etAlamat,etTipeAccount,etTanggalRegistrasi,etApiKey,etSecureKey;
     Button btnEdit,btnSimpan;
 
+    String status_cek,message,message_severity;
+    String JSON_data;
     String username, nama, alamat, tipe, tanggal, API_KEY, secure_key;
 
     public FragmentProfil() {}
@@ -48,6 +55,8 @@ public class FragmentProfil extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View inflaterProfil = inflater.inflate(R.layout.fragment_profil, container, false);
+        llNotif = (LinearLayout) inflaterProfil.findViewById(R.id.llNotif);
+        tvNotif = (TextView) inflaterProfil.findViewById(R.id.tvNotif);
         etUsername = (EditText) inflaterProfil.findViewById(R.id.etUsername);
         etNama = (EditText) inflaterProfil.findViewById(R.id.etNama);
         etAlamat = (EditText) inflaterProfil.findViewById(R.id.etAlamat);
@@ -77,7 +86,7 @@ public class FragmentProfil extends Fragment {
             Log.d(TAG, "Do in background");
             HTTPSvc sh = new HTTPSvc();
             String url = RootActivity.api_profil;
-            JSON_data = sh.makeServiceCall(url, HTTPSvc.POST);
+            JSON_data = sh.makeServiceCall(url, HTTPSvc.GET);
             if(JSON_data!=null){
                 try {
                     JSONObject jsonObj = new JSONObject(JSON_data);
@@ -130,20 +139,100 @@ public class FragmentProfil extends Fragment {
                             etNama.setEnabled(true);
                             etAlamat.setEnabled(true);
                             btnSimpan.setVisibility(View.VISIBLE);
+                            btnSimpan.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    llNotif.setVisibility(View.VISIBLE);
+                                    String upt_nama = etNama.getText().toString().trim();
+                                    String upt_alamat = etAlamat.getText().toString().trim();
+                                    if(upt_nama.equals("") || upt_nama == null || upt_alamat.equals("") || upt_alamat == null){
+                                        tvNotif.setText("Semua field wajib diisi!");
+                                        tvNotif.setBackgroundColor(Color.parseColor("#FFF59D"));
+                                    }else{
+                                        data_profil.add(new BasicNameValuePair("username", etUsername.getText().toString().trim()));
+                                        data_profil.add(new BasicNameValuePair("nama", upt_nama));
+                                        data_profil.add(new BasicNameValuePair("alamat", upt_alamat));
+                                        new AsyncUpdateProfil().execute();
+                                    }
+
+                                }
+                            });
                         }else
                         if(btnEdit.getText().equals("Kembali")){
                             btnEdit.setText("Edit");
                             etNama.setEnabled(false);
                             etAlamat.setEnabled(false);
                             btnSimpan.setVisibility(View.GONE);
+                            tvNotif.setText("");
+                            llNotif.setVisibility(View.GONE);
                         }
                     }
                 });
             }else{
-                    Toast.makeText(getActivity().getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
+                 Toast.makeText(getActivity().getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
             }
         }
     }
 
+    private class AsyncUpdateProfil extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            pDialog = new ProgressDialog(getContext());
+            pDialog.setMessage("Mohon menunggu...");
+            pDialog.setCancelable(false);
+            pDialog.show();
+            super.onPreExecute();
+        }
 
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            Log.d(TAG, "Do in background");
+            HTTPSvc sh = new HTTPSvc();
+            String url = RootActivity.api_update_profil;
+            JSON_data = sh.makeServiceCall(url, HTTPSvc.POST, data_profil);
+            if(JSON_data!=null){
+                try {
+                    JSONObject jsonObj = new JSONObject(JSON_data);
+                    JSONObject response = jsonObj.getJSONObject("response");
+                    status_cek = response.getString("status_cek");
+                    message = response.getString("message");
+                    message_severity = response.getString("message_severity");
+                } catch (final JSONException e) {
+                    Log.e(TAG, e.getMessage());
+                }
+                loaddata=true;
+            }
+            else{
+                loaddata=false;
+            }
+            Log.d(TAG, "JSON data : " + JSON_data);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            if(pDialog.isShowing()){
+                pDialog.dismiss();
+            }
+            if(loaddata){
+                tvNotif.setText(message);
+                if(message_severity.equals("success")){
+                    etNama.setEnabled(false);
+                    etAlamat.setEnabled(false);
+                    btnSimpan.setVisibility(View.GONE);
+                    tvNotif.setBackgroundColor(Color.parseColor("#A5D6A7"));
+                }else
+                if(message_severity.equals("warning")){
+                    tvNotif.setBackgroundColor(Color.parseColor("#FFF59D"));
+                }else
+                if(message_severity.equals("danger")){
+                    tvNotif.setBackgroundColor(Color.parseColor("#EF9A9A"));
+                }
+            }else{
+                tvNotif.setText("Error !");
+                tvNotif.setBackgroundColor(Color.parseColor("#EF9A9A"));
+            }
+        }
+    }
 }

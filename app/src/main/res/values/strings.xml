@@ -12,7 +12,9 @@
     <string name="api_login">verifikasi/</string>
     <string name="api_daftar">verifikasi_daftar/</string>
     <string name="api_dashboard">dashboard/</string>
-    <string name="api_profil_root">load_detail_user/1/</string>
+    <string name="api_profil">load_detail_user/</string>
+    <string name="api_update_profil">update_detail_user/</string>
+    <string name="api_update_password">update_password/</string>
     <string name="title_activity_root">RootActivity</string>
 
     <!-- TODO: Remove or change this placeholder text -->

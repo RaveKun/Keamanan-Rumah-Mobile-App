@@ -2,6 +2,7 @@ package com.keamanan_rumah.sistemkeamananrumah;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -36,17 +37,18 @@ public class Login extends AppCompatActivity {
     String TAG;
     String status_cek,message,message_severity;
     String id, username, nama, tipe, API_KEY, secure_key, waktu;
-    
+    String pref_tipe;
+
     Boolean loaddata;
     String JSON_data;
+
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-
-
-
         TAG = getResources().getString(R.string.TAG);
         api_site_url = getResources().getString(R.string.api_site_url);
         api_login = getResources().getString(R.string.api_login);
@@ -55,7 +57,6 @@ public class Login extends AppCompatActivity {
         editUsername = (EditText)findViewById(R.id.editUsername);
         editPass = (EditText)findViewById(R.id.editPass);
         tvNotif = (TextView)findViewById(R.id.tvNotif);
-
 
         btnDaftar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +82,28 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
+
+        pref = getApplicationContext().getSharedPreferences("KEAMANAN_RUMAH", 0);
+        editor = pref.edit();
+        pref_tipe = pref.getString("TIPE",null);
+
+
+        if(pref_tipe != null){
+            if(pref_tipe.equals("1")){
+//            Intent i = new Intent(Login.this, RootActivity.class);
+                Toast.makeText(getApplicationContext(),"Anda sedang login sebagai root",Toast.LENGTH_LONG).show();
+            }else
+            if(pref_tipe.equals("2")){
+//            Intent i = new Intent(Login.this, RootActivity.class);
+                Toast.makeText(getApplicationContext(),"Anda sedang login sebagai coordinator",Toast.LENGTH_LONG).show();
+            }else
+            if(pref_tipe.equals("3")){
+//            Intent i = new Intent(Login.this, RootActivity.class);
+                Toast.makeText(getApplicationContext(),"Anda sedang login sebagai sibling",Toast.LENGTH_LONG).show();
+            }
+        }
+
+
     }
 
     private class AsyncLogin extends AsyncTask<Void, Void, Void> {
@@ -106,7 +129,6 @@ public class Login extends AppCompatActivity {
                     status_cek = response.getString("status_cek");
                     message = response.getString("message");
                     message_severity = response.getString("message_severity");
-                    //--
                     JSONArray data_user = response.getJSONArray("data_user");
                     JSONObject objUser = data_user.getJSONObject(0);
                     id = objUser.getString("id");
@@ -116,7 +138,6 @@ public class Login extends AppCompatActivity {
                     API_KEY = objUser.getString("API_KEY");
                     secure_key = objUser.getString("secure_key");
                     waktu = objUser.getString("waktu");
-                    //--
                 } catch (final JSONException e) {
                     Log.e(TAG, e.getMessage());
                 }
@@ -140,20 +161,17 @@ public class Login extends AppCompatActivity {
                     tvNotif.setText(message);
                     editUsername.setText("");
                     editPass.setText("");
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "ID : " + id + "\n" +
-                            "Username : " + username + "\n" +
-                            "Nama : " + nama + "\n" +
-                            "Tipe : " + tipe + "\n" +
-                            "API_KEY : " + API_KEY + "\n" +
-                            "Sec : " + secure_key + "\n"+
-                            "Waktu : " + waktu + "\n",
-                            Toast.LENGTH_LONG
-                    ).show();
+                    editor.putString("ID",id);
+                    editor.putString("USERNAME",username);
+                    editor.putString("NAMA",nama);
+                    editor.putString("TIPE",tipe);
+                    editor.putString("API_KEY",API_KEY);
+                    editor.putString("SECURE_KEY",secure_key);
+                    editor.putString("WAKTU",waktu);
+                    editor.commit();
                     Intent i = new Intent(Login.this, RootActivity.class);
-                    i.putExtra("JSON_data",JSON_data);
                     startActivity(i);
+                    finish();
                 }else{
                     tvNotif.setText(message);
                 }

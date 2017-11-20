@@ -34,10 +34,12 @@ public class RootActivity extends AppCompatActivity
     public static String pref_waktu;
 
     public static String id;
+    public static String api_daftar;
     public static String api_dashboard;
     public static String api_profil;
     public static String api_update_profil;
     public static String api_update_password;
+    public static String api_load_all_parent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,10 +74,12 @@ public class RootActivity extends AppCompatActivity
         pref_secure_key = pref.getString("SECURE_KEY",null);
         pref_waktu = pref.getString("WAKTU",null);
 
+        api_daftar = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_daftar));
         api_dashboard = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_dashboard));
         api_profil = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_profil)).concat(pref_id);
         api_update_profil = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_update_profil)).concat(pref_id);
         api_update_password = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_update_password)).concat(pref_id);
+        api_load_all_parent = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_load_all_parent));
     }
 
     @Override

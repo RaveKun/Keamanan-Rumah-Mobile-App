@@ -4,15 +4,15 @@
         <menu>
             <item
                 android:id="@+id/nav_dashboard"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/ic_dashboard"
                 android:title="Dashboard" />
             <item
                 android:id="@+id/nav_profile"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_profil"
                 android:title="Profile" />
             <item
                 android:id="@+id/nav_ubah_password"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_password"
                 android:title="Ubah Password" />
         </menu>
     </item>
@@ -20,11 +20,11 @@
         <menu>
             <item
                 android:id="@+id/nav_tambah_pengguna"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/ic_tambah_pengguna"
                 android:title="Tambah Pengguna" />
             <item
                 android:id="@+id/nav_daftar_pengguna"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_daftar_pengguna"
                 android:title="Daftar Pengguna" />
         </menu>
     </item>

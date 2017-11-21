@@ -22,7 +22,6 @@ import java.util.List;
 
 public class Daftar extends AppCompatActivity {
 
-
     List<NameValuePair> data_daftar = new ArrayList<NameValuePair>(7);
 
     Button btnDaftar,btnLogin;
@@ -31,7 +30,7 @@ public class Daftar extends AppCompatActivity {
     ProgressDialog pDialog;
 
     String u,p,n,a;
-    String api_site_url,api_daftar;
+    String api_daftar;
     String TAG;
     String status_cek,message,message_severity;
 
@@ -42,8 +41,7 @@ public class Daftar extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.daftar);
         TAG = getResources().getString(R.string.TAG);
-        api_site_url = getResources().getString(R.string.api_site_url);
-        api_daftar = getResources().getString(R.string.api_daftar);
+        api_daftar = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_daftar));
         btnLogin=(Button)findViewById(R.id.btnLogin);
         btnDaftar=(Button) findViewById(R.id.btnDaftar);
         editUsername = (EditText)findViewById(R.id.editUsername);
@@ -95,7 +93,7 @@ public class Daftar extends AppCompatActivity {
         protected Void doInBackground(Void... arg0) {
             Log.d(TAG, "Do in background");
             HTTPSvc sh = new HTTPSvc();
-            String url = api_site_url.concat(api_daftar);
+            String url = api_daftar;
             String JSON_data = sh.makeServiceCall(url, HTTPSvc.POST, data_daftar);
             if(JSON_data!=null){
                 try {

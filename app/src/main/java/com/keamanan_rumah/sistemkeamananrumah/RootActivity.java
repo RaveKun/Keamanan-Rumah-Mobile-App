@@ -2,7 +2,6 @@ package com.keamanan_rumah.sistemkeamananrumah;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -22,25 +21,6 @@ public class RootActivity extends AppCompatActivity
     Fragment fragment;
     Dialog dialBox;
 
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
-
-    public static String pref_id;
-    public static String pref_username;
-    public static String pref_nama;
-    public static String pref_tipe;
-    public static String pref_api_key;
-    public static String pref_secure_key;
-    public static String pref_waktu;
-
-    public static String id;
-    public static String api_daftar;
-    public static String api_dashboard;
-    public static String api_profil;
-    public static String api_update_profil;
-    public static String api_update_password;
-    public static String api_load_all_parent;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,29 +37,11 @@ public class RootActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
+        onNavigationItemSelected(navigationView.getMenu().getItem(0));
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         tx.replace(R.id.FrameRoot, new FragmentDashboard());
         tx.commit();
-
         dialBox = createDialogBox();
-
-        pref = getApplicationContext().getSharedPreferences("KEAMANAN_RUMAH", 0);
-        editor = pref.edit();
-
-        pref_id = pref.getString("ID",null);
-        pref_username = pref.getString("USERNAME",null);
-        pref_nama = pref.getString("NAMA",null);
-        pref_tipe = pref.getString("TIPE",null);
-        pref_api_key = pref.getString("API_KEY",null);
-        pref_secure_key = pref.getString("SECURE_KEY",null);
-        pref_waktu = pref.getString("WAKTU",null);
-
-        api_daftar = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_daftar));
-        api_dashboard = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_dashboard));
-        api_profil = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_profil)).concat(pref_id);
-        api_update_profil = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_update_profil)).concat(pref_id);
-        api_update_password = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_update_password)).concat(pref_id);
-        api_load_all_parent = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_load_all_parent));
     }
 
     @Override

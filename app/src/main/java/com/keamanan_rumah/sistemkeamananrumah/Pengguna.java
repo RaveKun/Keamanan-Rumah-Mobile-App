@@ -9,7 +9,7 @@ public class Pengguna {
         super();
     }
 
-    public Pengguna(String username,String nama, String status){
+    public Pengguna(String nama, String username, String status){
         super();
         this.username = username;
         this.nama = nama;

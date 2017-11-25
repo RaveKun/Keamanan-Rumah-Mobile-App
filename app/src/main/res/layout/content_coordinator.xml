@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context="com.keamanan_rumah.sistemkeamananrumah.RootActivity"
+    tools:context="com.keamanan_rumah.sistemkeamananrumah.CoordinatorActivity"
     tools:showIn="@layout/app_bar_root">
 
     <FrameLayout
-        android:id="@+id/FrameRoot"
+        android:id="@+id/FrameCoordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="50dp">

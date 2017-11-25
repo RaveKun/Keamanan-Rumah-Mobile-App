@@ -1,6 +1,7 @@
 package com.keamanan_rumah.sistemkeamananrumah;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,14 +29,11 @@ import static android.content.ContentValues.TAG;
 
 public class FragmentUbahPassword extends Fragment {
 
-
     boolean loaddata;
-    ProgressDialog pDialog;
 
     List<NameValuePair> data_password = new ArrayList<NameValuePair>(3);
 
-    String strPassLama, strPassBaru, strPassKonfirmasi;
-
+    ProgressDialog pDialog;
     LinearLayout llNotif;
     TextView tvNotif;
     EditText etPassLama, etPassBaru, etPassKonfirmasi;
@@ -43,6 +41,26 @@ public class FragmentUbahPassword extends Fragment {
 
     String status_cek,message,message_severity;
     String JSON_data;
+    String strPassLama, strPassBaru, strPassKonfirmasi;
+
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+
+    public static String pref_id;
+    public static String pref_username;
+    public static String pref_nama;
+    public static String pref_tipe;
+    public static String pref_api_key;
+    public static String pref_secure_key;
+    public static String pref_waktu;
+
+    public static String id;
+    public static String api_daftar;
+    public static String api_dashboard;
+    public static String api_profil;
+    public static String api_update_profil;
+    public static String api_update_password;
+    public static String api_load_all_parent;
 
     public FragmentUbahPassword() {}
 
@@ -66,6 +84,24 @@ public class FragmentUbahPassword extends Fragment {
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        pref = getActivity().getSharedPreferences("KEAMANAN_RUMAH", 0);
+        editor = pref.edit();
+
+        pref_id = pref.getString("ID",null);
+        pref_username = pref.getString("USERNAME",null);
+        pref_nama = pref.getString("NAMA",null);
+        pref_tipe = pref.getString("TIPE",null);
+        pref_api_key = pref.getString("API_KEY",null);
+        pref_secure_key = pref.getString("SECURE_KEY",null);
+        pref_waktu = pref.getString("WAKTU",null);
+
+        api_daftar = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_daftar));
+        api_dashboard = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_dashboard));
+        api_profil = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_profil)).concat(pref_id);
+        api_update_profil = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_update_profil)).concat(pref_id);
+        api_update_password = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_update_password)).concat(pref_id);
+        api_load_all_parent = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_load_all_parent));
+
         btnSimpan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +143,7 @@ public class FragmentUbahPassword extends Fragment {
         protected Void doInBackground(Void... arg0) {
             Log.d(TAG, "Do in background");
             HTTPSvc sh = new HTTPSvc();
-            String url = RootActivity.api_update_password;
+            String url = api_update_password;
             JSON_data = sh.makeServiceCall(url, HTTPSvc.POST, data_password);
             if(JSON_data!=null){
                 try {

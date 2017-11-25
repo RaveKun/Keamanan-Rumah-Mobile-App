@@ -26,6 +26,8 @@ import java.util.List;
 public class Login extends AppCompatActivity {
 
     List<NameValuePair> data_login = new ArrayList<NameValuePair>(7);
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
 
     Button btnDaftar,btnLogin;
     EditText editUsername,editPass;
@@ -33,25 +35,35 @@ public class Login extends AppCompatActivity {
     ProgressDialog pDialog;
 
     String u,p;
-    String api_site_url,api_login;
+    String api_login;
     String TAG;
     String status_cek,message,message_severity;
     String id, username, nama, tipe, API_KEY, secure_key, waktu;
     String pref_tipe;
-
-    Boolean loaddata;
     String JSON_data;
 
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
+    Boolean loaddata;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+        pref = getApplicationContext().getSharedPreferences("KEAMANAN_RUMAH", 0);
+        editor = pref.edit();
+        pref_tipe = pref.getString("TIPE",null);
+        if(pref_tipe != null){
+            if(pref_tipe.equals("1")){
+                Toast.makeText(getApplicationContext(),"Anda sedang login sebagai root",Toast.LENGTH_LONG).show();
+            }else
+            if(pref_tipe.equals("2")){
+                Toast.makeText(getApplicationContext(),"Anda sedang login sebagai coordinator",Toast.LENGTH_LONG).show();
+            }else
+            if(pref_tipe.equals("3")){
+                Toast.makeText(getApplicationContext(),"Anda sedang login sebagai sibling",Toast.LENGTH_LONG).show();
+            }
+        }
         TAG = getResources().getString(R.string.TAG);
-        api_site_url = getResources().getString(R.string.api_site_url);
-        api_login = getResources().getString(R.string.api_login);
+        api_login= getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_login));
         btnDaftar = (Button)findViewById(R.id.btnDaftar);
         btnLogin = (Button)findViewById(R.id.btnLogin);
         editUsername = (EditText)findViewById(R.id.editUsername);
@@ -82,28 +94,6 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
-
-        pref = getApplicationContext().getSharedPreferences("KEAMANAN_RUMAH", 0);
-        editor = pref.edit();
-        pref_tipe = pref.getString("TIPE",null);
-
-
-        if(pref_tipe != null){
-            if(pref_tipe.equals("1")){
-//            Intent i = new Intent(Login.this, RootActivity.class);
-                Toast.makeText(getApplicationContext(),"Anda sedang login sebagai root",Toast.LENGTH_LONG).show();
-            }else
-            if(pref_tipe.equals("2")){
-//            Intent i = new Intent(Login.this, RootActivity.class);
-                Toast.makeText(getApplicationContext(),"Anda sedang login sebagai coordinator",Toast.LENGTH_LONG).show();
-            }else
-            if(pref_tipe.equals("3")){
-//            Intent i = new Intent(Login.this, RootActivity.class);
-                Toast.makeText(getApplicationContext(),"Anda sedang login sebagai sibling",Toast.LENGTH_LONG).show();
-            }
-        }
-
-
     }
 
     private class AsyncLogin extends AsyncTask<Void, Void, Void> {
@@ -120,7 +110,7 @@ public class Login extends AppCompatActivity {
         protected Void doInBackground(Void... arg0) {
             Log.d(TAG, "Do in background");
             HTTPSvc sh = new HTTPSvc();
-            String url = api_site_url.concat(api_login);
+            String url = api_login;
             JSON_data = sh.makeServiceCall(url, HTTPSvc.POST, data_login);
             if(JSON_data!=null){
                 try {
@@ -129,7 +119,6 @@ public class Login extends AppCompatActivity {
                     status_cek = response.getString("status_cek");
                     message = response.getString("message");
                     message_severity = response.getString("message_severity");
-                    //user
                     JSONArray data_user = response.getJSONArray("data_user");
                     JSONObject objUser = data_user.getJSONObject(0);
                     id = objUser.getString("id");
@@ -170,8 +159,15 @@ public class Login extends AppCompatActivity {
                     editor.putString("SECURE_KEY",secure_key);
                     editor.putString("WAKTU",waktu);
                     editor.commit();
-                    Intent i = new Intent(Login.this, RootActivity.class);
-                    startActivity(i);
+                    Intent i;
+                    if(tipe.equals("1")){
+                         i = new Intent(Login.this, RootActivity.class);
+                         startActivity(i);
+                    }else
+                    if(tipe.equals("2")){
+                        i = new Intent(Login.this, CoordinatorActivity.class);
+                        startActivity(i);
+                    }
                     finish();
                 }else{
                     tvNotif.setText(message);

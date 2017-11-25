@@ -23,10 +23,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Daftar"></activity>
+        <activity android:name=".Daftar" />
         <activity
             android:name=".RootActivity"
-            android:label="@string/title_activity_root"
+            android:label="Keamanan Rumah"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CoordinatorActivity"
+            android:label="Keamanan Rumah"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

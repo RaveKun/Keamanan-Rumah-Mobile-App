@@ -1,6 +1,7 @@
 package com.keamanan_rumah.sistemkeamananrumah;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,8 +33,11 @@ import static android.content.ContentValues.TAG;
 
 public class FragmentTambahPengguna extends Fragment {
 
+    List<String> spinnerArray =  new ArrayList<String>();
     List<NameValuePair> data_daftar = new ArrayList<NameValuePair>(9);
+
     boolean loaddata;
+
     EditText etUsername,etPassword,etNama,etAlamat;
     Spinner spSebagai;
     Button btnSimpan;
@@ -44,12 +47,27 @@ public class FragmentTambahPengguna extends Fragment {
 
     String[] array_id_parent;
     String[] array_nama_parent;
-    String parent_id;
-
-    List<String> spinnerArray =  new ArrayList<String>();
-    String JSON_data;
-
+    String parent_id;String JSON_data;
     String status_cek,message,message_severity;
+
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+
+    public static String pref_id;
+    public static String pref_username;
+    public static String pref_nama;
+    public static String pref_tipe;
+    public static String pref_api_key;
+    public static String pref_secure_key;
+    public static String pref_waktu;
+
+    public static String id;
+    public static String api_daftar;
+    public static String api_dashboard;
+    public static String api_profil;
+    public static String api_update_profil;
+    public static String api_update_password;
+    public static String api_load_all_parent;
 
     public FragmentTambahPengguna() {}
 
@@ -75,11 +93,34 @@ public class FragmentTambahPengguna extends Fragment {
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        spinnerArray.add("Jadikan sebagai Koordinator");
+        pref = getActivity().getSharedPreferences("KEAMANAN_RUMAH", 0);
+        editor = pref.edit();
+
+        pref_id = pref.getString("ID",null);
+        pref_username = pref.getString("USERNAME",null);
+        pref_nama = pref.getString("NAMA",null);
+        pref_tipe = pref.getString("TIPE",null);
+        pref_api_key = pref.getString("API_KEY",null);
+        pref_secure_key = pref.getString("SECURE_KEY",null);
+        pref_waktu = pref.getString("WAKTU",null);
+
+        api_daftar = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_daftar));
+        api_dashboard = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_dashboard));
+        api_profil = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_profil)).concat(pref_id);
+        api_update_profil = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_update_profil)).concat(pref_id);
+        api_update_password = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_update_password)).concat(pref_id);
+        api_load_all_parent = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_load_all_parent));
+
+        if(pref_tipe.equals("1")){
+            spinnerArray.add("Jadikan sebagai Koordinator");
+            new AsyncAllParent().execute();
+        }else{
+            spinnerArray.add("Jadikan sebagai Anggota Keluarga");
+        }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, spinnerArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spSebagai.setAdapter(adapter);
-        new AsyncAllParent().execute();
+
         btnSimpan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,17 +138,21 @@ public class FragmentTambahPengguna extends Fragment {
                     tvNotif.setText("Semua field harus diisi");
                     tvNotif.setBackgroundColor(Color.parseColor("#FFF59D"));
                 }else{
-                    if(selected.equals("Jadikan sebagai Koordinator")){
-                        parent_id = "0";
-                        str_tipe = "2";
-                    }else{
-                        String[] splited = selected.split("Jadikan sibling dari ");
-                        for(int x=0;x<array_nama_parent.length;x++){
-                            if(array_nama_parent[x].equals(splited[1])){
-                                parent_id = array_id_parent[x];
-                                str_tipe = "3";
+                    if(pref_tipe.equals("1")){
+                        if(selected.equals("Jadikan sebagai Koordinator")){
+                            parent_id = "0";
+                            str_tipe = "2";
+                        }else{
+                            String[] splited = selected.split("Jadikan sibling dari ");
+                            for(int x=0;x<array_nama_parent.length;x++){
+                                if(array_nama_parent[x].equals(splited[1])){
+                                    parent_id = array_id_parent[x];
+                                    str_tipe = "3";
+                                }
                             }
                         }
+                    }else{
+                        parent_id = pref_id;
                     }
                     Toast.makeText(getContext(),parent_id.toString(),Toast.LENGTH_LONG).show();
                     data_daftar.add(new BasicNameValuePair("username", str_username));
@@ -116,6 +161,10 @@ public class FragmentTambahPengguna extends Fragment {
                     data_daftar.add(new BasicNameValuePair("alamat", str_alamat));
                     data_daftar.add(new BasicNameValuePair("tipe_user", str_tipe));
                     data_daftar.add(new BasicNameValuePair("parent", parent_id));
+                    if(!pref_tipe.equals("1")){
+                        data_daftar.add(new BasicNameValuePair("API_KEY", pref_api_key));
+                        data_daftar.add(new BasicNameValuePair("secure_key", pref_secure_key));
+                    }
                     new AsyncDaftar().execute();
                 }
             }
@@ -136,7 +185,7 @@ public class FragmentTambahPengguna extends Fragment {
         protected Void doInBackground(Void... arg0) {
             Log.d(TAG, "Do in background");
             HTTPSvc sh = new HTTPSvc();
-            String url = RootActivity.api_load_all_parent;
+            String url = api_load_all_parent;
             JSON_data = sh.makeServiceCall(url, HTTPSvc.GET);
             if(JSON_data!=null){
                 try {
@@ -196,7 +245,7 @@ public class FragmentTambahPengguna extends Fragment {
         protected Void doInBackground(Void... arg0) {
             Log.d(TAG, "Do in background");
             HTTPSvc sh = new HTTPSvc();
-            String url = RootActivity.api_daftar.concat(RootActivity.pref_id);
+            String url = api_daftar.concat(pref_tipe);
             String JSON_data = sh.makeServiceCall(url, HTTPSvc.POST, data_daftar);
             if(JSON_data!=null){
                 try {
@@ -225,7 +274,7 @@ public class FragmentTambahPengguna extends Fragment {
             }
             if(loaddata){
                 tvNotif.setText(message);
-                if(status_cek.equals("MATCH")){
+                if(status_cek.equals("SUCCESS")){
                     etUsername.setText("");
                     etPassword.setText("");
                     etNama.setText("");

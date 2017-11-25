@@ -111,11 +111,16 @@ public class FragmentTambahPengguna extends Fragment {
         api_update_password = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_update_password)).concat(pref_id);
         api_load_all_parent = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_load_all_parent));
 
-        spinnerArray.add("Jadikan sebagai Koordinator");
+        if(pref_tipe.equals("1")){
+            spinnerArray.add("Jadikan sebagai Koordinator");
+            new AsyncAllParent().execute();
+        }else{
+            spinnerArray.add("Jadikan sebagai Anggota Keluarga");
+        }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, spinnerArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spSebagai.setAdapter(adapter);
-        new AsyncAllParent().execute();
+
         btnSimpan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,17 +138,21 @@ public class FragmentTambahPengguna extends Fragment {
                     tvNotif.setText("Semua field harus diisi");
                     tvNotif.setBackgroundColor(Color.parseColor("#FFF59D"));
                 }else{
-                    if(selected.equals("Jadikan sebagai Koordinator")){
-                        parent_id = "0";
-                        str_tipe = "2";
-                    }else{
-                        String[] splited = selected.split("Jadikan sibling dari ");
-                        for(int x=0;x<array_nama_parent.length;x++){
-                            if(array_nama_parent[x].equals(splited[1])){
-                                parent_id = array_id_parent[x];
-                                str_tipe = "3";
+                    if(pref_tipe.equals("1")){
+                        if(selected.equals("Jadikan sebagai Koordinator")){
+                            parent_id = "0";
+                            str_tipe = "2";
+                        }else{
+                            String[] splited = selected.split("Jadikan sibling dari ");
+                            for(int x=0;x<array_nama_parent.length;x++){
+                                if(array_nama_parent[x].equals(splited[1])){
+                                    parent_id = array_id_parent[x];
+                                    str_tipe = "3";
+                                }
                             }
                         }
+                    }else{
+                        parent_id = pref_id;
                     }
                     Toast.makeText(getContext(),parent_id.toString(),Toast.LENGTH_LONG).show();
                     data_daftar.add(new BasicNameValuePair("username", str_username));
@@ -152,6 +161,10 @@ public class FragmentTambahPengguna extends Fragment {
                     data_daftar.add(new BasicNameValuePair("alamat", str_alamat));
                     data_daftar.add(new BasicNameValuePair("tipe_user", str_tipe));
                     data_daftar.add(new BasicNameValuePair("parent", parent_id));
+                    if(!pref_tipe.equals("1")){
+                        data_daftar.add(new BasicNameValuePair("API_KEY", pref_api_key));
+                        data_daftar.add(new BasicNameValuePair("secure_key", pref_secure_key));
+                    }
                     new AsyncDaftar().execute();
                 }
             }
@@ -232,7 +245,7 @@ public class FragmentTambahPengguna extends Fragment {
         protected Void doInBackground(Void... arg0) {
             Log.d(TAG, "Do in background");
             HTTPSvc sh = new HTTPSvc();
-            String url = api_daftar.concat(pref_id);
+            String url = api_daftar.concat(pref_tipe);
             String JSON_data = sh.makeServiceCall(url, HTTPSvc.POST, data_daftar);
             if(JSON_data!=null){
                 try {

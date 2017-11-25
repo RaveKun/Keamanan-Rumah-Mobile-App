@@ -41,6 +41,7 @@ public class FragmentDashboard extends Fragment {
     String user_block;
     String database_today;
     String database_total;
+    String url;
 
     public static String pref_id;
     public static String pref_username;
@@ -126,7 +127,11 @@ public class FragmentDashboard extends Fragment {
         protected Void doInBackground(Void... arg0) {
             Log.d(TAG, "Do in background");
             HTTPSvc sh = new HTTPSvc();
-            String url = api_dashboard;
+            if(pref_tipe.equals("1")){
+                url = api_dashboard;
+            }else{
+                url = api_dashboard.concat(pref_api_key);
+            }
             JSON_data = sh.makeServiceCall(url, HTTPSvc.POST);
             if(JSON_data!=null){
                 try {

@@ -163,15 +163,11 @@ public class Login extends AppCompatActivity {
                     if(tipe.equals("1")){
                          i = new Intent(Login.this, RootActivity.class);
                          startActivity(i);
+                    }else
+                    if(tipe.equals("2")){
+                        i = new Intent(Login.this, CoordinatorActivity.class);
+                        startActivity(i);
                     }
-//                    else
-//                    if(tipe.equals("2")){
-//                        i = new Intent(Login.this, CoordinatorActivity.class);
-//                    }else
-//                    if(tipe.equals("3")){
-//                        i = new Intent(Login.this, SiblingActivity.class);
-//                    }
-
                     finish();
                 }else{
                     tvNotif.setText(message);

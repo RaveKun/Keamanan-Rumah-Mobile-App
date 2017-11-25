@@ -4,11 +4,11 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="actionLogout">Logout</string>
     <string name="title_activity_login">Login</string>
 
     <string name="TAG">Sistem Keamanan Rumah</string>
-    <string name="api_site_url">http://192.168.0.101/keamananrumah/index.php/api/</string>
+    <string name="api_site_url">http://192.168.0.104/keamananrumah/index.php/api/</string>
     <string name="api_login">verifikasi/</string>
     <string name="api_daftar">verifikasi_daftar/</string>
     <string name="api_dashboard">dashboard/</string>
@@ -16,10 +16,15 @@
     <string name="api_update_profil">update_detail_user/</string>
     <string name="api_update_password">update_password/</string>
     <string name="api_load_all_parent">load_all_parent/</string>
+    <string name="api_load_all_user">load_all_user/</string>
+    <string name="api_load_all_family">load_all_family/</string>
     <string name="title_activity_root">RootActivity</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_coordinator">CoordinatorActivity</string>
+
+    <string name="action_settings">Settings</string>
 
 
 </resources>

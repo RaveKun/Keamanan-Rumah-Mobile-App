@@ -4,28 +4,30 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
+import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class CoordinatorActivity extends AppCompatActivity
+public class SiblingActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
     Fragment fragment;
     Dialog dialBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_coordinator);
+        setContentView(R.layout.activity_sibling);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -37,6 +39,7 @@ public class CoordinatorActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
         navigationView.getMenu().getItem(0).setChecked(true);
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
         String redirect = "";
@@ -44,10 +47,10 @@ public class CoordinatorActivity extends AppCompatActivity
         redirect = i.getStringExtra("redirect");
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         if(redirect.equals("monitoring")){
-            tx.replace(R.id.FrameCoordinator, new FragmentMonitoring());
+            tx.replace(R.id.FrameSibling, new FragmentMonitoring());
         }else
         if(redirect.equals("dashboard")){
-            tx.replace(R.id.FrameCoordinator, new FragmentDashboard());
+            tx.replace(R.id.FrameSibling, new FragmentDashboard());
         }
         tx.commit();
         dialBox = createDialogBox();
@@ -80,7 +83,7 @@ public class CoordinatorActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.coordinator, menu);
+        getMenuInflater().inflate(R.menu.sibling, menu);
         return true;
     }
 
@@ -118,7 +121,7 @@ public class CoordinatorActivity extends AppCompatActivity
 
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.FrameCoordinator, fragment);
+            ft.replace(R.id.FrameSibling, fragment);
             ft.commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

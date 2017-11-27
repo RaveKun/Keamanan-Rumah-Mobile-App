@@ -213,6 +213,23 @@ public class FragmentDaftarPengguna extends Fragment {
                         rbActive.setChecked(false);
                         rbBlocked.setChecked(true);
                     }
+
+                    if(pref_tipe.equals("3")){
+                        btnHapus.setVisibility(View.GONE);
+                        btnSimpan.setVisibility(View.GONE);
+                    }else
+                    if(pref_tipe.equals("2") && pref_id.equals(selected_id)){
+                        btnHapus.setVisibility(View.GONE);
+                        btnSimpan.setVisibility(View.VISIBLE);
+                    }else
+                    if(pref_tipe.equals("2") && !pref_id.equals(selected_id)){
+                        btnHapus.setVisibility(View.VISIBLE);
+                        btnSimpan.setVisibility(View.VISIBLE);
+                    }else
+                    if(pref_tipe.equals("1")){
+                        btnHapus.setVisibility(View.VISIBLE);
+                        btnSimpan.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         } catch (final JSONException e) {
@@ -316,6 +333,11 @@ public class FragmentDaftarPengguna extends Fragment {
                             dataToEdit(username);
                         }
                     });
+                }else{
+                    lvPengguna.setVisibility(View.GONE);
+                    llNotif.setVisibility(View.VISIBLE);
+                    tvNotif.setText("Tidak ada pengguna terdaftar didatabase");
+                    tvNotif.setBackgroundColor(Color.parseColor("#A5D6A7"));
                 }
             }else{
                 Toast.makeText(getActivity().getApplicationContext(),"Error",Toast.LENGTH_LONG).show();

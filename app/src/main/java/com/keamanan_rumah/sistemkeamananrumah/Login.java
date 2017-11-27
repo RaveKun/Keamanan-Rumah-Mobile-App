@@ -1,6 +1,8 @@
 package com.keamanan_rumah.sistemkeamananrumah;
 
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -91,9 +93,20 @@ public class Login extends AppCompatActivity {
                 }else
                 if(u.equals("") || p.equals("")){
                     tvNotif.setText("Masukkan Username dan Password");
+                    tvNotif.setBackgroundColor(Color.parseColor("#FFF59D"));
                 }
             }
         });
+    }
+
+    private boolean isNotifServiceOn(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private class AsyncLogin extends AsyncTask<Void, Void, Void> {
@@ -165,7 +178,23 @@ public class Login extends AppCompatActivity {
                          startActivity(i);
                     }else
                     if(tipe.equals("2")){
+                        if(isNotifServiceOn(BackgroundService.class)){
+                            Log.d(TAG,"Service sudah dalam kondisi ON");
+                        }else {
+                            startService(new Intent(getBaseContext(), BackgroundService.class));
+                        }
                         i = new Intent(Login.this, CoordinatorActivity.class);
+                        i.putExtra("redirect","dashboard");
+                        startActivity(i);
+                    }else
+                    if(tipe.equals("3")){
+                        if(isNotifServiceOn(BackgroundService.class)){
+                            Log.d(TAG,"Service sudah dalam kondisi ON");
+                        }else {
+                            startService(new Intent(getBaseContext(), BackgroundService.class));
+                        }
+                        i = new Intent(Login.this, SiblingActivity.class);
+                        i.putExtra("redirect","dashboard");
                         startActivity(i);
                     }
                     finish();
@@ -182,7 +211,7 @@ public class Login extends AppCompatActivity {
                     tvNotif.setBackgroundColor(Color.parseColor("#EF9A9A"));
                 }
             }else{
-                tvNotif.setText("Error !");
+                tvNotif.setText("Error! ");
                 tvNotif.setBackgroundColor(Color.parseColor("#EF9A9A"));
             }
         }

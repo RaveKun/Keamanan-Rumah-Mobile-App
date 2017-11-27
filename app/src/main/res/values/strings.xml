@@ -8,7 +8,7 @@
     <string name="title_activity_login">Login</string>
 
     <string name="TAG">Sistem Keamanan Rumah</string>
-    <string name="api_site_url">http://192.168.0.104/keamananrumah/index.php/api/</string>
+    <string name="api_site_url">http://192.168.0.102/keamananrumah/index.php/api/</string>
     <string name="api_login">verifikasi/</string>
     <string name="api_daftar">verifikasi_daftar/</string>
     <string name="api_dashboard">dashboard/</string>
@@ -20,12 +20,15 @@
     <string name="api_load_all_family">load_all_family/</string>
     <string name="api_update_pengguna">update_pengguna/</string>
     <string name="api_delete_pengguna">delete_user/</string>
+    <string name="api_monitoring">recent/</string>
+    <string name="api_notif">recent/</string>
     <string name="title_activity_root">RootActivity</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_coordinator">CoordinatorActivity</string>
 
     <string name="action_settings">Settings</string>
+    <string name="title_activity_sibling">Keamanan Rumah</string>
 
 
 </resources>

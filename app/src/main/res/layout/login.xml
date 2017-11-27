@@ -28,7 +28,8 @@
             android:layout_height="50dp"
             android:gravity="center"
             android:layout_marginBottom="10dp"
-            android:text="Welcome" />
+            android:background="#A5D6A7"
+            android:text="Selamat Datang!" />
 
         <EditText
             android:id="@+id/editUsername"
@@ -79,9 +80,5 @@
                     android:text="Login"/>
             </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
-
-
-
 </ScrollView>

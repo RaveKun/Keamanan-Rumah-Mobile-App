@@ -8,8 +8,7 @@
         android:id="@+id/ivUser"
         android:layout_width="125px"
         android:layout_height="125px"
-        android:src="@drawable/ic_profil"/>
-
+        android:src="@mipmap/user_active"/>
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"

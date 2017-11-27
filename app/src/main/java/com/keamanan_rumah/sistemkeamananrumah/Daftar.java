@@ -66,15 +66,15 @@ public class Daftar extends AppCompatActivity {
                 p = editPass.getText().toString();
                 n = editNama.getText().toString();
                 a = editAlamat.getText().toString();
-                if(!u.equals("") && !p.equals("")){
+                if(u.length() > 6 && p.length() > 6 && !n.equals("") && !a.equals("")){
                     data_daftar.add(new BasicNameValuePair("username", u));
                     data_daftar.add(new BasicNameValuePair("password", p));
                     data_daftar.add(new BasicNameValuePair("nama", n));
                     data_daftar.add(new BasicNameValuePair("alamat", a));
                     new AsyncDaftar().execute();
-                }else
-                if(u.equals("") || p.equals("")){
-                    tvNotif.setText("Masukkan Username dan Password");
+                }else{
+                    tvNotif.setText("Pastikan semua field telah terisi. Untuk username dan password minimal 7 digit.");
+                    tvNotif.setBackgroundColor(Color.parseColor("#FFF59D"));
                 }
             }
         });

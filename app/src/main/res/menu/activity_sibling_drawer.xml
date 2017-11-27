@@ -19,10 +19,6 @@
     <item android:title="Kelola Pengguna">
         <menu>
             <item
-                android:id="@+id/nav_tambah_pengguna"
-                android:icon="@drawable/ic_tambah_pengguna"
-                android:title="Tambah Pengguna" />
-            <item
                 android:id="@+id/nav_daftar_pengguna"
                 android:icon="@drawable/ic_daftar_pengguna"
                 android:title="Daftar Pengguna" />

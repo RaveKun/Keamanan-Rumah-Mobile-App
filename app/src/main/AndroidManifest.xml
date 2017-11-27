@@ -31,6 +31,16 @@
         <activity
             android:name=".CoordinatorActivity"
             android:label="Keamanan Rumah"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service
+            android:name=".BackgroundService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
+            android:name=".SiblingActivity"
+            android:label="@string/title_activity_sibling"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

@@ -125,7 +125,6 @@ public class FragmentDashboard extends Fragment {
 
         @Override
         protected Void doInBackground(Void... arg0) {
-            Log.d(TAG, "Do in background");
             HTTPSvc sh = new HTTPSvc();
             if(pref_tipe.equals("1")){
                 url = api_dashboard;

@@ -53,6 +53,8 @@ public class FragmentTambahPengguna extends Fragment {
     SharedPreferences pref;
     SharedPreferences.Editor editor;
 
+    JSONArray response;
+
     public static String pref_id;
     public static String pref_username;
     public static String pref_nama;
@@ -190,7 +192,7 @@ public class FragmentTambahPengguna extends Fragment {
             if(JSON_data!=null){
                 try {
                     JSONObject jsonObj = new JSONObject(JSON_data);
-                    JSONArray response = jsonObj.getJSONArray("response");
+                    response = jsonObj.getJSONArray("response");
                     if(response.length() > 0){
                         array_id_parent = new String[response.length()];
                         array_nama_parent = new String[response.length()];
@@ -221,12 +223,10 @@ public class FragmentTambahPengguna extends Fragment {
             if(pDialog.isShowing()){
                 pDialog.dismiss();
             }
-            if(loaddata){
+            if(loaddata && response.length() > 0){
                 for(int x=0;x<array_nama_parent.length;x++){
                     spinnerArray.add("Jadikan sibling dari " + array_nama_parent[x] );
                 }
-            }else{
-                Toast.makeText(getActivity().getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
             }
         }
     }

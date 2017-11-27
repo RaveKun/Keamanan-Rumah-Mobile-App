@@ -50,91 +50,101 @@
             android:layout_height="wrap_content"
             android:visibility="visible"
             android:orientation="vertical">
-             <LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:background="#FFFFFF"
                 android:padding="10dp"
                 android:orientation="horizontal">
                 <ImageView
-                    android:id="@+id/ivSuhu"
+                    android:id="@+id/ivIndoor"
                     android:src="@mipmap/temperature_icon"
                     android:layout_width="128px"
                     android:layout_height="128px" />
-                <TextView
-                    android:id="@+id/tvSuhu"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="fill_vertical"
-                    android:textColor="#666"
-                    android:textSize="20dp"
-                    android:text="Halaman Rumah Aman"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="#FFFFFF"
-                android:padding="10dp"
-                android:orientation="horizontal">
-                <ImageView
-                    android:id="@+id/ivKelembaban"
-                    android:src="@mipmap/humidity_icon"
-                    android:layout_width="128px"
-                    android:layout_height="128px" />
-                <TextView
-                    android:id="@+id/tvKelembaban"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="fill_vertical"
-                    android:textColor="#666"
-                    android:textSize="20dp"
-                    android:text="Kelembaban : 0 %"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="#FFFFFF"
-                android:padding="10dp"
-                android:orientation="horizontal">
-                <ImageView
-                    android:id="@+id/ivLampu"
-                    android:src="@mipmap/off_bulb"
-                    android:layout_width="128px"
-                    android:layout_height="128px" />
-                <TextView
-                    android:id="@+id/tvLampu"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="fill_vertical"
-                    android:textColor="#666"
-                    android:textSize="20dp"
-                    android:text="Lampu : OFF"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="fill_vertical"
+                        android:textColor="#666"
+                        android:textSize="16dp"
+                        android:text="Human Detector Indoor"/>
+                    <TextView
+                        android:id="@+id/tvIndoor"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="fill_vertical"
+                        android:textColor="#666"
+                        android:textSize="16dp"
+                        android:text="Human Detector Indoor"/>
+                </LinearLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:background="#FFFFFF"
                 android:padding="10dp"
                 android:orientation="horizontal">
                 <ImageView
-                    android:id="@+id/ivKipas"
-                    android:src="@mipmap/off_fan"
+                    android:id="@+id/ivOutdoor"
+                    android:src="@mipmap/temperature_icon"
                     android:layout_width="128px"
                     android:layout_height="128px" />
-                <TextView
-                    android:id="@+id/tvKipas"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="fill_vertical"
-                    android:textColor="#666"
-                    android:textSize="20dp"
-                    android:text="Kipas : OFF"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="fill_vertical"
+                        android:textColor="#666"
+                        android:textSize="16dp"
+                        android:text="Human Detector Outdoor"/>
+                    <TextView
+                        android:id="@+id/tvOutdoor"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="fill_vertical"
+                        android:textColor="#666"
+                        android:textSize="16dp"
+                        android:text="Human Detector Outdoor"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:padding="10dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/ivDoorLock"
+                    android:src="@mipmap/temperature_icon"
+                    android:layout_width="128px"
+                    android:layout_height="128px" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="fill_vertical"
+                        android:textColor="#666"
+                        android:textSize="16dp"
+                        android:text="Door / Lock Sensor"/>
+                    <TextView
+                        android:id="@+id/tvDoorLock"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="fill_vertical"
+                        android:textColor="#666"
+                        android:textSize="16dp"
+                        android:text="Door / Lock Sensor"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

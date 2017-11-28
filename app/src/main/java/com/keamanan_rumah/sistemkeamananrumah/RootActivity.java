@@ -2,6 +2,8 @@ package com.keamanan_rumah.sistemkeamananrumah;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -78,10 +80,8 @@ public class RootActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.actionLogout) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        jalankanFragment(id);
+        return true;
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -103,6 +103,15 @@ public class RootActivity extends AppCompatActivity
             fragment = new FragmentTambahPengguna();
         }else if (id == R.id.nav_daftar_pengguna) {
             fragment = new FragmentDaftarPengguna();
+        }else if (id == R.id.actionLogout){
+            stopService(new Intent(getBaseContext(), BackgroundService.class));
+            SharedPreferences preferences = getApplicationContext().getSharedPreferences("KEAMANAN_RUMAH", 0);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.commit();
+            Intent i = new Intent(RootActivity.this,Login.class);
+            startActivity(i);
+            finish();
         }
 
         if (fragment != null) {

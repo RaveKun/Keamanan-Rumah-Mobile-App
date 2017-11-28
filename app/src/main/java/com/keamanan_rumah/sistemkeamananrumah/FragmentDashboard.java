@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,8 @@ public class FragmentDashboard extends Fragment {
 
 
     TextView tvActive,tvBlocked,tvTotalRecord,tvRecordToday;
+    LinearLayout llNoNetwork,llNetworkAvailable;
+
 
     SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -69,6 +72,8 @@ public class FragmentDashboard extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View inflaterDashboard = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        llNetworkAvailable = (LinearLayout) inflaterDashboard.findViewById(R.id.llNetworkAvailable);
+        llNoNetwork = (LinearLayout) inflaterDashboard.findViewById(R.id.llNoNetwork);
         tvActive = (TextView) inflaterDashboard.findViewById(R.id.tvActive);
         tvBlocked = (TextView) inflaterDashboard.findViewById(R.id.tvBlocked);
         tvRecordToday = (TextView) inflaterDashboard.findViewById(R.id.tvRecordToday);
@@ -96,6 +101,9 @@ public class FragmentDashboard extends Fragment {
         api_update_profil = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_update_profil)).concat(pref_id);
         api_update_password = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_update_password)).concat(pref_id);
         api_load_all_parent = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_load_all_parent));
+
+        llNoNetwork.setVisibility(View.GONE);
+        llNetworkAvailable.setVisibility(View.VISIBLE);
 
         final Handler handler = new Handler();
         Timer timer = new Timer();
@@ -159,15 +167,16 @@ public class FragmentDashboard extends Fragment {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            if(isAdded()){
-                if(loaddata){
-                    tvActive.setText("User aktif : " + user_total);
-                    tvBlocked.setText("User blocked : " + user_block);
-                    tvRecordToday.setText("Data hari ini : " + database_today);
-                    tvTotalRecord.setText("Total data : " + database_total);
-                }else{
-                    Toast.makeText(getActivity().getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
-                }
+            if(loaddata){
+                llNetworkAvailable.setVisibility(View.VISIBLE);
+                llNoNetwork.setVisibility(View.GONE);
+                tvActive.setText("Total User : " + user_total);
+                tvBlocked.setText("User blocked : " + user_block);
+                tvRecordToday.setText("Data hari ini : " + database_today);
+                tvTotalRecord.setText("Total data : " + database_total);
+            }else{
+                llNetworkAvailable.setVisibility(View.GONE);
+                llNoNetwork.setVisibility(View.VISIBLE);
             }
         }
     }

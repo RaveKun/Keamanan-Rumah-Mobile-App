@@ -6,28 +6,33 @@
 
     <ImageView
         android:id="@+id/ivUser"
-        android:layout_width="125px"
-        android:layout_height="125px"
+        android:layout_width="175px"
+        android:layout_height="175px"
+        android:padding="5dp"
         android:src="@mipmap/user_active"/>
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="5dp">
         <TextView
             android:id="@+id/tvNama"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
+            android:textStyle="bold"
             android:text="Nama User"/>
         <TextView
             android:id="@+id/tvUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textStyle="italic"
             android:text="Username" />
         <TextView
             android:id="@+id/tvStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textStyle="italic"
             android:text="Status" />
     </LinearLayout>
 </LinearLayout>

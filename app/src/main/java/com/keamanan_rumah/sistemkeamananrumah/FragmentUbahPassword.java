@@ -183,7 +183,7 @@ public class FragmentUbahPassword extends Fragment {
                     tvNotif.setBackgroundColor(Color.parseColor("#EF9A9A"));
                 }
             }else{
-                tvNotif.setText("Error !");
+                tvNotif.setText("Error! Terjaid kesalahan pada saat update password. Silahkan coba beberapa saat lagi.");
                 tvNotif.setBackgroundColor(Color.parseColor("#EF9A9A"));
             }
         }

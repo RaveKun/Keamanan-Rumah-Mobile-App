@@ -42,6 +42,8 @@ public class FragmentDaftarPengguna extends Fragment {
 
     List<NameValuePair> data_update = new ArrayList<NameValuePair>(7);
 
+    LinearLayout llNoNetwork,llNetworkAvailable;
+
     LinearLayout llEditPengguna;
     LinearLayout llNotif;
     ListView lvPengguna;
@@ -108,6 +110,8 @@ public class FragmentDaftarPengguna extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View inflaterDaftarPengguna = inflater.inflate(R.layout.fragment_daftar_pengguna, container, false);
+        llNetworkAvailable = (LinearLayout) inflaterDaftarPengguna.findViewById(R.id.llNetworkAvailable);
+        llNoNetwork = (LinearLayout) inflaterDaftarPengguna.findViewById(R.id.llNoNetwork);
         llNotif = (LinearLayout) inflaterDaftarPengguna.findViewById(R.id.llNotif);
         tvNotif = (TextView) inflaterDaftarPengguna.findViewById(R.id.tvNotif);
         rbActive = (RadioButton) inflaterDaftarPengguna.findViewById(R.id.radioActive);
@@ -152,6 +156,16 @@ public class FragmentDaftarPengguna extends Fragment {
         api_load_all_family = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_load_all_family));
         api_update_pengguna = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_update_pengguna));
         api_delete_pengguna = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_delete_pengguna));
+
+        llNoNetwork.setVisibility(View.GONE);
+        llNetworkAvailable.setVisibility(View.VISIBLE);
+
+        llNoNetwork.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AsyncPengguna().execute();
+            }
+        });
 
         btnKembali.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,14 +231,23 @@ public class FragmentDaftarPengguna extends Fragment {
                     if(pref_tipe.equals("3")){
                         btnHapus.setVisibility(View.GONE);
                         btnSimpan.setVisibility(View.GONE);
+                        etNama.setEnabled(false);
+                        etPassword.setEnabled(false);
+                        etAlamat.setEnabled(false);
+                        rbActive.setEnabled(false);
+                        rbBlocked.setEnabled(false);
                     }else
                     if(pref_tipe.equals("2") && pref_id.equals(selected_id)){
                         btnHapus.setVisibility(View.GONE);
                         btnSimpan.setVisibility(View.VISIBLE);
+                        rbActive.setEnabled(false);
+                        rbBlocked.setEnabled(false);
                     }else
                     if(pref_tipe.equals("2") && !pref_id.equals(selected_id)){
                         btnHapus.setVisibility(View.VISIBLE);
                         btnSimpan.setVisibility(View.VISIBLE);
+                        rbActive.setEnabled(false);
+                        rbBlocked.setEnabled(false);
                     }else
                     if(pref_tipe.equals("1")){
                         btnHapus.setVisibility(View.VISIBLE);
@@ -315,6 +338,8 @@ public class FragmentDaftarPengguna extends Fragment {
             }
             super.onPostExecute(result);
             if(loaddata){
+                llNoNetwork.setVisibility(View.GONE);
+                llNetworkAvailable.setVisibility(View.VISIBLE);
                 if(len > 0){
                     Pengguna pengguna[] = new Pengguna[len];
                     for(int x=0;x<len;x++){
@@ -340,7 +365,8 @@ public class FragmentDaftarPengguna extends Fragment {
                     tvNotif.setBackgroundColor(Color.parseColor("#A5D6A7"));
                 }
             }else{
-                Toast.makeText(getActivity().getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
+                llNoNetwork.setVisibility(View.VISIBLE);
+                llNetworkAvailable.setVisibility(View.GONE);
             }
         }
     }

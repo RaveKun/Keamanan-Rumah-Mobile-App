@@ -33,6 +33,7 @@ public class FragmentProfil extends Fragment {
 
 
     List<NameValuePair> data_profil = new ArrayList<NameValuePair>(3);
+    LinearLayout llNoNetwork,llNetworkAvailable;
 
     boolean loaddata;
     ProgressDialog pDialog;
@@ -75,6 +76,8 @@ public class FragmentProfil extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View inflaterProfil = inflater.inflate(R.layout.fragment_profil, container, false);
+        llNetworkAvailable = (LinearLayout) inflaterProfil.findViewById(R.id.llNetworkAvailable);
+        llNoNetwork = (LinearLayout) inflaterProfil.findViewById(R.id.llNoNetwork);
         llNotif = (LinearLayout) inflaterProfil.findViewById(R.id.llNotif);
         tvNotif = (TextView) inflaterProfil.findViewById(R.id.tvNotif);
         etUsername = (EditText) inflaterProfil.findViewById(R.id.etUsername);
@@ -109,12 +112,27 @@ public class FragmentProfil extends Fragment {
         api_update_profil = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_update_profil)).concat(pref_id);
         api_update_password = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_update_password)).concat(pref_id);
         api_load_all_parent = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_load_all_parent));
+
+        llNoNetwork.setVisibility(View.GONE);
+        llNetworkAvailable.setVisibility(View.VISIBLE);
+
+        llNoNetwork.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AsyncProfil().execute();
+            }
+        });
+
         new AsyncProfil().execute();
     }
 
     private class AsyncProfil extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
+            pDialog = new ProgressDialog(getContext());
+            pDialog.setMessage("Mengambil data profil . . .");
+            pDialog.setCancelable(false);
+            pDialog.show();
             super.onPreExecute();
         }
 
@@ -151,7 +169,12 @@ public class FragmentProfil extends Fragment {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
+            if(pDialog.isShowing()){
+                pDialog.dismiss();
+            }
             if(loaddata){
+                llNetworkAvailable.setVisibility(View.VISIBLE);
+                llNoNetwork.setVisibility(View.GONE);
                 etUsername.setText(username);
                 etNama.setText(nama);
                 etAlamat.setText(alamat);
@@ -206,7 +229,8 @@ public class FragmentProfil extends Fragment {
                     }
                 });
             }else{
-                 Toast.makeText(getActivity().getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
+                llNetworkAvailable.setVisibility(View.GONE);
+                llNoNetwork.setVisibility(View.VISIBLE);
             }
         }
     }

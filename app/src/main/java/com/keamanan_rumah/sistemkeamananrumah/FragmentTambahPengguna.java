@@ -35,6 +35,7 @@ public class FragmentTambahPengguna extends Fragment {
 
     List<String> spinnerArray =  new ArrayList<String>();
     List<NameValuePair> data_daftar = new ArrayList<NameValuePair>(9);
+    LinearLayout llNoNetwork,llNetworkAvailable;
 
     boolean loaddata;
 
@@ -81,6 +82,8 @@ public class FragmentTambahPengguna extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View inflaterTambahPengguna = inflater.inflate(R.layout.fragment_tambah_pengguna, container, false);
+        llNetworkAvailable = (LinearLayout) inflaterTambahPengguna.findViewById(R.id.llNetworkAvailable);
+        llNoNetwork = (LinearLayout) inflaterTambahPengguna.findViewById(R.id.llNoNetwork);
         llNotif = (LinearLayout) inflaterTambahPengguna.findViewById(R.id.llNotif);
         tvNotif = (TextView) inflaterTambahPengguna.findViewById(R.id.tvNotif);
         etUsername = (EditText) inflaterTambahPengguna.findViewById(R.id.etUsername);
@@ -113,6 +116,16 @@ public class FragmentTambahPengguna extends Fragment {
         api_update_password = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_update_password)).concat(pref_id);
         api_load_all_parent = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_load_all_parent));
 
+        llNoNetwork.setVisibility(View.GONE);
+        llNetworkAvailable.setVisibility(View.VISIBLE);
+
+        llNoNetwork.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AsyncAllParent().execute();
+            }
+        });
+
         if(pref_tipe.equals("1")){
             spinnerArray.add("Jadikan sebagai Koordinator");
             new AsyncAllParent().execute();
@@ -133,11 +146,11 @@ public class FragmentTambahPengguna extends Fragment {
                 String selected = spSebagai.getSelectedItem().toString();
                 String str_tipe = "";
                 llNotif.setVisibility(View.VISIBLE);
-                if(str_username.equals("") || str_username == null ||
-                str_password.equals("") || str_password == null ||
+                if(str_username.equals("") || str_username == null || str_username.length() < 6 ||
+                str_password.equals("") || str_password == null || str_password.length() < 6 ||
                 str_nama.equals("") || str_nama == null ||
                 str_alamat.equals("") || str_alamat == null ){
-                    tvNotif.setText("Semua field harus diisi");
+                    tvNotif.setText("Semua field harus diisi. Untuk username dan password minimal 7 digit.");
                     tvNotif.setBackgroundColor(Color.parseColor("#FFF59D"));
                 }else{
                     if(pref_tipe.equals("1")){
@@ -224,9 +237,14 @@ public class FragmentTambahPengguna extends Fragment {
                 pDialog.dismiss();
             }
             if(loaddata && response.length() > 0){
+                llNoNetwork.setVisibility(View.GONE);
+                llNetworkAvailable.setVisibility(View.VISIBLE);
                 for(int x=0;x<array_nama_parent.length;x++){
                     spinnerArray.add("Jadikan sibling dari " + array_nama_parent[x] );
                 }
+            }else{
+                llNoNetwork.setVisibility(View.VISIBLE);
+                llNetworkAvailable.setVisibility(View.GONE);
             }
         }
     }

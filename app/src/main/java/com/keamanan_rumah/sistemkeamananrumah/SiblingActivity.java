@@ -3,6 +3,7 @@ package com.keamanan_rumah.sistemkeamananrumah;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -90,11 +91,10 @@ public class SiblingActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.actionLogout) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        jalankanFragment(id);
+        return true;
     }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -117,6 +117,15 @@ public class SiblingActivity extends AppCompatActivity
             fragment = new FragmentDaftarPengguna();
         }else if (id == R.id.nav_monitoring) {
             fragment = new FragmentMonitoring();
+        }else if (id == R.id.actionLogout){
+            stopService(new Intent(getBaseContext(), BackgroundService.class));
+            SharedPreferences preferences = getApplicationContext().getSharedPreferences("KEAMANAN_RUMAH", 0);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.commit();
+            Intent i = new Intent(SiblingActivity.this,Login.class);
+            startActivity(i);
+            finish();
         }
 
         if (fragment != null) {

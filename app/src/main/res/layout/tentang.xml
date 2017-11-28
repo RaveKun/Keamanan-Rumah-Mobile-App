@@ -87,7 +87,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Erwin Ligar Nugraha"
+        android:text="By : Erwin Ligar Nugraha"
+        android:textAlignment="center"/>
+    <TextView
+        android:id="@+id/Versi"
+        android:layout_width="match_parent"
+        android:layout_height="145dp"
+        android:gravity="bottom"
+        android:layout_marginTop="10dp"
+        android:text="Sistem Keamanan Rumah 1.0"
         android:textAlignment="center"/>
 </LinearLayout>
 </ScrollView>

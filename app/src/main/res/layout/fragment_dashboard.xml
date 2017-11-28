@@ -29,22 +29,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="10dp"
-            android:visibility="gone"
+            android:visibility="visible"
             android:orientation="vertical">
             <ImageView
                 android:id="@+id/ivNoNetwork"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="256px"
+                android:layout_height="256px"
                 android:layout_marginTop="60dp"
                 android:src="@mipmap/nonetwork"
                 android:layout_gravity="center"/>
             <TextView
                 android:id="@+id/tvNoNetwork"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_margin="5dp"
+                android:padding="10dp"
                 android:textSize="16dp"
-                android:text="Tidak dapat terhubung ke server.\n"/>
+                android:text="Tidak dapat terhubung ke server."/>
         </LinearLayout>
         <!--End of no network available-->
         <LinearLayout

@@ -55,13 +55,22 @@ public class Login extends AppCompatActivity {
         pref_tipe = pref.getString("TIPE",null);
         if(pref_tipe != null){
             if(pref_tipe.equals("1")){
-                Toast.makeText(getApplicationContext(),"Anda sedang login sebagai root",Toast.LENGTH_LONG).show();
+                Intent i = new Intent(Login.this,RootActivity.class);
+                i.putExtra("redirect","dashboard");
+                startActivity(i);
+                finish();
             }else
             if(pref_tipe.equals("2")){
-                Toast.makeText(getApplicationContext(),"Anda sedang login sebagai coordinator",Toast.LENGTH_LONG).show();
+                Intent i = new Intent(Login.this,CoordinatorActivity.class);
+                i.putExtra("redirect","dashboard");
+                startActivity(i);
+                finish();
             }else
             if(pref_tipe.equals("3")){
-                Toast.makeText(getApplicationContext(),"Anda sedang login sebagai sibling",Toast.LENGTH_LONG).show();
+                Intent i = new Intent(Login.this,SiblingActivity.class);
+                i.putExtra("redirect","dashboard");
+                startActivity(i);
+                finish();
             }
         }
         TAG = getResources().getString(R.string.TAG);

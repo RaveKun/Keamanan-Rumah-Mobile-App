@@ -30,6 +30,10 @@
                 android:id="@+id/nav_monitoring"
                 android:icon="@drawable/ic_monitoring"
                 android:title="Monitoring" />
+            <item
+                android:id="@+id/nav_kelola_perangkat"
+                android:icon="@drawable/ic_kelola_perangkat"
+                android:title="Kelola Perangkat" />
         </menu>
     </item>
 </menu>

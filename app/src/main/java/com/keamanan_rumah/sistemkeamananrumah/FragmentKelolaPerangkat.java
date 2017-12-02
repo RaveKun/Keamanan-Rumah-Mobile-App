@@ -206,7 +206,6 @@ public class FragmentKelolaPerangkat extends Fragment {
                 } catch (final JSONException e) {
                     Log.e(TAG, e.getMessage());
                 }
-
                 loaddata=true;
             }
             else{

@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Keamanan-Rumah-Mobile-App.iml" filepath="$PROJECT_DIR$/Keamanan-Rumah-Mobile-App.iml" />
-      <module fileurl="file://$PROJECT_DIR$/SistemKeamananRumah.iml" filepath="$PROJECT_DIR$/SistemKeamananRumah.iml" />
+      <module fileurl="file://D:\Data All About Praktek\Pakai Android Studio\apps\Keamanan-Rumah-Mobile-App\SistemKeamananRumah.iml" filepath="D:\Data All About Praktek\Pakai Android Studio\apps\Keamanan-Rumah-Mobile-App\SistemKeamananRumah.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

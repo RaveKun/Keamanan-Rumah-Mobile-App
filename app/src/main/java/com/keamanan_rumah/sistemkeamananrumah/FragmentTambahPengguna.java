@@ -169,7 +169,6 @@ public class FragmentTambahPengguna extends Fragment {
                     }else{
                         parent_id = pref_id;
                     }
-                    Toast.makeText(getContext(),parent_id.toString(),Toast.LENGTH_LONG).show();
                     data_daftar.add(new BasicNameValuePair("username", str_username));
                     data_daftar.add(new BasicNameValuePair("password", str_password));
                     data_daftar.add(new BasicNameValuePair("nama", str_nama));

@@ -8,7 +8,7 @@
     <string name="title_activity_login">Login</string>
 
     <string name="TAG">Sistem Keamanan Rumah</string>
-    <string name="api_site_url">http://192.168.0.107/keamananrumah/index.php/api/</string>
+    <string name="api_site_url">http://192.168.0.104/keamananrumah/index.php/api/</string>
     <!--<string name="api_site_url">http://192.168.43.116/keamananrumah/index.php/api/</string>-->
     <string name="api_login">verifikasi/</string>
     <string name="api_daftar">verifikasi_daftar/</string>

@@ -1,13 +1,137 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.keamanan_rumah.sistemkeamananrumah.FragmentRequestOpen">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    android:layout_height="match_parent">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-</FrameLayout>
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginBottom="10dp"
+            android:background="@mipmap/background8"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:textSize="24dp"
+                android:text="DAFTAR PENGGUNA"/>
+        </LinearLayout>
+        <!--Notif-->
+        <LinearLayout
+            android:id="@+id/llNotif"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:padding="5dp">
+            <TextView
+                android:id="@+id/tvNotif"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:layout_marginBottom="10dp"/>
+        </LinearLayout>
+        <!--End of Notif -->
+        <!--No network available-->
+        <LinearLayout
+            android:id="@+id/llNoNetwork"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:visibility="gone"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/ivNoNetwork"
+                android:layout_width="256px"
+                android:layout_height="256px"
+                android:layout_marginTop="60dp"
+                android:src="@mipmap/nonetwork"
+                android:layout_gravity="center"/>
+            <TextView
+                android:id="@+id/tvNoNetwork"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_margin="5dp"
+                android:padding="10dp"
+                android:textSize="16dp"
+                android:text="Tidak dapat terhubung ke server.\n Tap untuk mencoba terhubung"/>
+        </LinearLayout>
+        <!--End of no network available-->
+        <LinearLayout
+            android:id="@+id/llNetworkAvailable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/llRequestOpen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:orientation="vertical"
+                android:paddingBottom="60dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="fill_vertical"
+                        android:textColor="#666"
+                        android:textSize="14dp"
+                        android:text="Request Open Block"/>
+                    <EditText
+                        android:id="@+id/etUsername"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="username"
+                        android:enabled="false"
+                        android:inputType="text"/>
+                    <EditText
+                        android:id="@+id/etTipeAccount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="tipe"
+                        android:enabled="false"
+                        android:inputType="text"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:orientation="vertical">
+                    <Button
+                        android:id="@+id/btnRequestOpen"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#1bbc9b"
+                        android:layout_marginBottom="5dp"
+                        android:text="Request Open"/>
+                    <Button
+                        android:id="@+id/btnKembali"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#BFBFBF"
+                        android:layout_marginBottom="5dp"
+                        android:text="Kembali"/>
+                </LinearLayout>
+            </LinearLayout>
+            <!---->
+            <ListView
+                android:id="@+id/lvPengguna"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="true"
+                android:layout_marginBottom="10dp"
+                android:padding="10dp">
+            </ListView>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

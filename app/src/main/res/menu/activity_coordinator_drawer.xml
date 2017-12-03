@@ -26,6 +26,10 @@
                 android:id="@+id/nav_daftar_pengguna"
                 android:icon="@drawable/ic_daftar_pengguna"
                 android:title="Daftar Pengguna" />
+            <item
+                android:id="@+id/nav_open_request"
+                android:icon="@drawable/ic_daftar_pengguna"
+                android:title="Daftar Pengguna" />
         </menu>
     </item>
     <item android:title="Monitoring">

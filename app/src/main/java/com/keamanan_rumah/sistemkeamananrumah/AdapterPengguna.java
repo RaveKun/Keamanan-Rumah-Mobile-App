@@ -50,6 +50,10 @@ public class AdapterPengguna extends ArrayAdapter<Pengguna>{
         if(pengguna.status.equals("2")){
             holder.tvStatus.setText("Blocked");
             holder.ivUser.setImageResource(R.mipmap.user_blocked);
+        }else
+        if(pengguna.status.equals("3")){
+            holder.tvStatus.setText("On proccess request open");
+            holder.ivUser.setImageResource(R.mipmap.user_blocked);
         }
 
 

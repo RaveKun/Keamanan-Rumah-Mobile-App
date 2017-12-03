@@ -53,6 +53,10 @@ public class FragmentKelolaPerangkat extends Fragment {
     String str_status_perangkat;
     String param_update;
 
+    String aktifkan = "1";
+    String non_aktifkan = "2";
+    String status_perangkat_terakhir;
+
     public static String pref_id;
     public static String pref_username;
     public static String pref_nama;
@@ -70,6 +74,7 @@ public class FragmentKelolaPerangkat extends Fragment {
     public static String api_load_all_parent;
     public static String api_monitoring;
     public static String api_update_perangkat;
+
 
     public FragmentKelolaPerangkat() {}
 
@@ -140,13 +145,26 @@ public class FragmentKelolaPerangkat extends Fragment {
             @Override
             public void onClick(View v) {
                 param_update = new String("");
-                if(etSecureKey.getText().toString().equals(pref_secure_key)){
-                    Toast.makeText(getContext(),"Cucok boo",Toast.LENGTH_LONG).show();
-                }else{
-                    llNetworkAvailable.setVisibility(View.VISIBLE);
-                    tvNotif.setText("Secure Key yang Anda masukkan tidak cocok.");
+                if(etSecureKey.getText().toString().equals("") || etSecureKey.getText().toString().length() < 4){
+                    llNotif.setVisibility(View.VISIBLE);
+                    tvNotif.setText("Secure key tidak boleh kosong, pastikan panjang Secure Key 4 digit.");
                     tvNotif.setBackgroundColor(Color.parseColor("#FFF59D"));
+                }else{
+                    if(etSecureKey.getText().toString().equals(pref_secure_key)){
+                        if(btnKelolaPerangkat.getText().toString().equals("Aktifkan")){
+                            param_update = aktifkan.concat("/").concat(pref_api_key).concat("/").concat(pref_id).concat("/");
+                        }else
+                        if(btnKelolaPerangkat.getText().toString().equals("Non-Aktifkan")){
+                            param_update = non_aktifkan.concat("/").concat(pref_api_key).concat("/").concat(pref_id).concat("/");
+                        }
+                        new AsyncUpdatePerangkat().execute();
+                    }else{
+                        llNotif.setVisibility(View.VISIBLE);
+                        tvNotif.setText("Secure Key yang Anda masukkan tidak cocok.");
+                        tvNotif.setBackgroundColor(Color.parseColor("#FFF59D"));
+                    }
                 }
+                etSecureKey.setText("");
             }
         });
 
@@ -220,7 +238,6 @@ public class FragmentKelolaPerangkat extends Fragment {
             super.onPostExecute(result);
             if(isAdded()){
                 if(loaddata){
-                    llNetworkAvailable.setVisibility(View.VISIBLE);
                     if(str_status_perangkat.equals("1")){
                         tvStatusPerangkat.setText("Status Perangkat Aktif");
                         btnKelolaPerangkat.setText("Non-Aktifkan");
@@ -231,6 +248,7 @@ public class FragmentKelolaPerangkat extends Fragment {
                         btnKelolaPerangkat.setText("Aktifkan");
                         btnKelolaPerangkat.setBackgroundColor(Color.parseColor("#1bbc9b"));
                     }
+                    status_perangkat_terakhir = str_status_perangkat;
                 }else{
                     llNetworkAvailable.setVisibility(View.GONE);
                     llNotif.setVisibility(View.VISIBLE);
@@ -278,18 +296,23 @@ public class FragmentKelolaPerangkat extends Fragment {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            if(isAdded()){
-                if(loaddata){
-                    if(str_status_perangkat.equals("1")){
-                        tvStatusPerangkat.setText("Status Perangkat Aktif");
-
-                    }else
-                    if(str_status_perangkat.equals("2")){
-                        tvStatusPerangkat.setText("Status Perangkat Tidak Aktif");
-                    }
+            if(pDialog.isShowing()){
+                pDialog.dismiss();
+            }
+            if(loaddata){
+                llNotif.setVisibility(View.VISIBLE);
+                if(str_status_perangkat.equals(status_perangkat_terakhir)){
+                    tvNotif.setText("Ubah status perangkat berhasil");
+                    tvNotif.setBackgroundColor(Color.parseColor("#A5D6A7"));
                 }else{
-                    Log.d(TAG,"Error saat load data status perangkat");
+                    tvNotif.setText("Ubah status perangkat gagal. Periksa sambungan internet Anda");
+                    tvNotif.setBackgroundColor(Color.parseColor("#FFF59D"));
                 }
+                llSecureKey.setVisibility(View.GONE);
+                llNetworkAvailable.setVisibility(View.VISIBLE);
+            }else{
+                tvNotif.setText("Error, terjadi kendala saat terhubung ke server.");
+                tvNotif.setBackgroundColor(Color.parseColor("#EF9A9A"));
             }
         }
     }

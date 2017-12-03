@@ -59,7 +59,7 @@
                 android:orientation="horizontal">
                 <ImageView
                     android:id="@+id/ivSuhu"
-                    android:src="@mipmap/user_active"
+                    android:src="@drawable/icon_verstaendnis"
                     android:layout_width="128px"
                     android:layout_height="128px" />
                 <TextView

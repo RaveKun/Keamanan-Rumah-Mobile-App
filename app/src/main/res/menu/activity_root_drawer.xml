@@ -26,6 +26,10 @@
                 android:id="@+id/nav_daftar_pengguna"
                 android:icon="@drawable/ic_daftar_pengguna"
                 android:title="Daftar Pengguna" />
+            <item
+                android:id="@+id/nav_approve_request_open"
+                android:icon="@drawable/ic_blocked_user"
+                android:title="Approve Open Blocked" />
         </menu>
     </item>
 </menu>

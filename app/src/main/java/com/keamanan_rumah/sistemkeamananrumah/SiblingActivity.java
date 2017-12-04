@@ -116,6 +116,8 @@ public class SiblingActivity extends AppCompatActivity
             fragment = new FragmentMonitoring();
         }else if (id == R.id.nav_kelola_perangkat) {
             fragment = new FragmentKelolaPerangkat();
+        }else if (id == R.id.nav_open_request) {
+            fragment = new FragmentRequestOpen();
         }else if (id == R.id.actionLogout){
             stopService(new Intent(getBaseContext(), BackgroundService.class));
             SharedPreferences preferences = getApplicationContext().getSharedPreferences("KEAMANAN_RUMAH", 0);

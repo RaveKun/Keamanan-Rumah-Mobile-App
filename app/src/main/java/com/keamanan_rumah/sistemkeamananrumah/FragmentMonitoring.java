@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,8 @@ import java.util.TimerTask;
 import static android.content.ContentValues.TAG;
 
 public class FragmentMonitoring extends Fragment {
+
+    LinearLayout llNoNetwork, llNetworkAvailable;
 
     TextView tvIndoor, tvOutdoor, tvDoorLock;
     ImageView ivIndoor, ivOutdoor, ivDoorLock;
@@ -42,6 +45,8 @@ public class FragmentMonitoring extends Fragment {
     String str_ussrf;
     String str_magnetic;
     String str_datetime;
+
+    int ln = 0;
 
     public static String pref_id;
     public static String pref_username;
@@ -71,6 +76,8 @@ public class FragmentMonitoring extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View inflaterMonitoring = inflater.inflate(R.layout.fragment_monitoring, container, false);
+        llNetworkAvailable = (LinearLayout) inflaterMonitoring.findViewById(R.id.llNetworkAvailable);
+        llNoNetwork = (LinearLayout) inflaterMonitoring.findViewById(R.id.llNoNetwork);
         tvIndoor = (TextView) inflaterMonitoring.findViewById(R.id.tvIndoor);
         tvOutdoor = (TextView) inflaterMonitoring.findViewById(R.id.tvOutdoor);
         tvDoorLock = (TextView) inflaterMonitoring.findViewById(R.id.tvDoorLock);
@@ -138,14 +145,17 @@ public class FragmentMonitoring extends Fragment {
                 try {
                     JSONObject jsonObj = new JSONObject(JSON_data);
                     JSONArray response = jsonObj.getJSONArray("response");
-                    JSONObject obj_sensor = response.getJSONObject(0);
-                    str_id = obj_sensor.getString("id");
-                    str_state = obj_sensor.getString("state");
-                    str_indoor = obj_sensor.getString("indoor");
-                    str_outdoor = obj_sensor.getString("outdoor");
-                    str_ussrf = obj_sensor.getString("ussrf");
-                    str_magnetic = obj_sensor.getString("magnetic");
-                    str_datetime = obj_sensor.getString("datetime");
+                    ln = response.length();
+                    if(ln > 0){
+                        JSONObject obj_sensor = response.getJSONObject(0);
+                        str_id = obj_sensor.getString("id");
+                        str_state = obj_sensor.getString("state");
+                        str_indoor = obj_sensor.getString("indoor");
+                        str_outdoor = obj_sensor.getString("outdoor");
+                        str_ussrf = obj_sensor.getString("ussrf");
+                        str_magnetic = obj_sensor.getString("magnetic");
+                        str_datetime = obj_sensor.getString("datetime");
+                    }
                 } catch (final JSONException e) {
                     Log.e(TAG, e.getMessage());
                 }
@@ -161,8 +171,10 @@ public class FragmentMonitoring extends Fragment {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            if(isAdded()){
-                if(loaddata){
+            if(loaddata){
+                if(ln > 0){
+                    llNetworkAvailable.setVisibility(View.VISIBLE);
+                    llNoNetwork.setVisibility(View.GONE);
                     String status_indoor, status_outdoor,status_doorlock;
                     if(str_indoor.equals("0")){
                         status_indoor = "AMAN";
@@ -189,8 +201,16 @@ public class FragmentMonitoring extends Fragment {
                     }
                     tvDoorLock.setText(status_doorlock);
                 }else{
-                    Toast.makeText(getActivity().getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
+                    ivIndoor.setImageResource(R.mipmap.no_data);
+                    ivOutdoor.setImageResource(R.mipmap.no_data);
+                    ivDoorLock.setImageResource(R.mipmap.no_data);
+                    tvIndoor.setText("Tidak ada data");
+                    tvOutdoor.setText("Tidak ada data");
+                    tvDoorLock.setText("Tidak ada data");
                 }
+            }else {
+                llNetworkAvailable.setVisibility(View.GONE);
+                llNoNetwork.setVisibility(View.VISIBLE);
             }
         }
     }

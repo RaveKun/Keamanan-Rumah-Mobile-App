@@ -1,12 +1,14 @@
 package com.keamanan_rumah.sistemkeamananrumah;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -211,8 +213,22 @@ public class FragmentProfil extends Fragment {
                                     }else{
                                         data_profil.add(new BasicNameValuePair("username", etUsername.getText().toString().trim()));
                                         data_profil.add(new BasicNameValuePair("nama", upt_nama));
-                                        data_profil.add(new BasicNameValuePair("alamat", upt_alamat));
-                                        new AsyncUpdateProfil().execute();
+                                        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                                        alertDialog.setTitle("Konfirmasi");
+                                        alertDialog.setMessage("Apakah Anda yakin akan menyimpan perubahan ?");
+                                        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Simpan", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                new AsyncUpdateProfil().execute();
+                                            }
+                                        });
+                                        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Batalkan", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                alertDialog.dismiss();
+                                            }
+                                        });
+                                        alertDialog.show();
                                     }
 
                                 }

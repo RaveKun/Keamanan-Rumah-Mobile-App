@@ -1,6 +1,7 @@
 package com.keamanan_rumah.sistemkeamananrumah;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -187,7 +189,22 @@ public class FragmentDaftarPengguna extends Fragment {
         btnHapus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AsyncDelete().execute();
+                final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                alertDialog.setTitle("Konfirmasi");
+                alertDialog.setMessage("Apakah Anda yakin akan menghapus data pengguna ?");
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Hapus", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new AsyncDelete().execute();
+                    }
+                });
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Batalkan", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        alertDialog.dismiss();
+                    }
+                });
+                alertDialog.show();
             }
         });
         new AsyncPengguna().execute();
@@ -278,7 +295,22 @@ public class FragmentDaftarPengguna extends Fragment {
             if(rbBlocked.isChecked()){
                 data_update.add(new BasicNameValuePair("status", "2"));
             }
-            new AsyncUpdate().execute();
+            final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+            alertDialog.setTitle("Konfirmasi");
+            alertDialog.setMessage("Apakah Anda yakin akan menyimpan perubahan data pengguna ?");
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Simpan", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    new AsyncUpdate().execute();
+                }
+            });
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Batalkan", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    alertDialog.dismiss();
+                }
+            });
+            alertDialog.show();
         }
     }
 

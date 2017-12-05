@@ -1,12 +1,14 @@
 package com.keamanan_rumah.sistemkeamananrumah;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -179,7 +181,22 @@ public class FragmentTambahPengguna extends Fragment {
                         data_daftar.add(new BasicNameValuePair("API_KEY", pref_api_key));
                         data_daftar.add(new BasicNameValuePair("secure_key", pref_secure_key));
                     }
-                    new AsyncDaftar().execute();
+                    final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                    alertDialog.setTitle("Konfirmasi");
+                    alertDialog.setMessage("Apakah Anda yakin akan menyimpan data pengguna baru ?");
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Simpan", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            new AsyncDaftar().execute();
+                        }
+                    });
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Batalkan", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            alertDialog.dismiss();
+                        }
+                    });
+                    alertDialog.show();
                 }
             }
         });

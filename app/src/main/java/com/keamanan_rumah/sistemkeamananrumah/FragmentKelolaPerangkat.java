@@ -76,6 +76,7 @@ public class FragmentKelolaPerangkat extends Fragment {
     public static String api_load_all_parent;
     public static String api_monitoring;
     public static String api_update_perangkat;
+    public static String api_status_perangkat;
 
 
     public FragmentKelolaPerangkat() {}
@@ -130,6 +131,7 @@ public class FragmentKelolaPerangkat extends Fragment {
         api_load_all_parent = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_load_all_parent));
         api_monitoring = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_monitoring));
         api_update_perangkat = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_update_perangkat));
+        api_status_perangkat = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_status_perangkat));
 
         llNoNetwork.setVisibility(View.GONE);
         llNetworkAvailable.setVisibility(View.VISIBLE);
@@ -230,7 +232,7 @@ public class FragmentKelolaPerangkat extends Fragment {
         protected Void doInBackground(Void... arg0) {
             Log.d(TAG, "Do in background");
             HTTPSvc sh = new HTTPSvc();
-            url = api_monitoring.concat(pref_api_key);
+            url = api_status_perangkat.concat(pref_api_key);
             JSON_data = sh.makeServiceCall(url, HTTPSvc.POST);
             if(JSON_data!=null){
                 try {

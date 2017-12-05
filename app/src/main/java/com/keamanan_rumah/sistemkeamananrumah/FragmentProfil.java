@@ -213,6 +213,7 @@ public class FragmentProfil extends Fragment {
                                     }else{
                                         data_profil.add(new BasicNameValuePair("username", etUsername.getText().toString().trim()));
                                         data_profil.add(new BasicNameValuePair("nama", upt_nama));
+                                        data_profil.add(new BasicNameValuePair("alamat", upt_alamat));
                                         final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
                                         alertDialog.setTitle("Konfirmasi");
                                         alertDialog.setMessage("Apakah Anda yakin akan menyimpan perubahan ?");

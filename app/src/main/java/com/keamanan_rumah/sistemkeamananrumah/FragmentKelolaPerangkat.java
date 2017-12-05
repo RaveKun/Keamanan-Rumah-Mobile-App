@@ -239,7 +239,7 @@ public class FragmentKelolaPerangkat extends Fragment {
                     JSONObject jsonObj = new JSONObject(JSON_data);
                     JSONArray response = jsonObj.getJSONArray("response");
                     JSONObject obj_sensor = response.getJSONObject(0);
-                    str_status_perangkat = obj_sensor.getString("status_perangkat");
+                    str_status_perangkat = obj_sensor.getString("status");
                 } catch (final JSONException e) {
                     Log.e(TAG, e.getMessage());
                 }

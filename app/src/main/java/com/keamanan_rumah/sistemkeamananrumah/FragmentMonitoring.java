@@ -28,8 +28,8 @@ public class FragmentMonitoring extends Fragment {
 
     LinearLayout llNoNetwork, llNetworkAvailable;
 
-    TextView tvIndoor, tvOutdoor, tvDoorLock;
-    ImageView ivIndoor, ivOutdoor, ivDoorLock;
+    TextView tvIndoor, tvOutdoor, tvDoorLock,tvStatusSensor;
+    ImageView ivIndoor, ivOutdoor, ivDoorLock,ivStatusSensor;
 
     SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -45,6 +45,7 @@ public class FragmentMonitoring extends Fragment {
     String str_ussrf;
     String str_magnetic;
     String str_datetime;
+    String str_status_perangkat;
 
     int ln = 0;
 
@@ -81,9 +82,11 @@ public class FragmentMonitoring extends Fragment {
         tvIndoor = (TextView) inflaterMonitoring.findViewById(R.id.tvIndoor);
         tvOutdoor = (TextView) inflaterMonitoring.findViewById(R.id.tvOutdoor);
         tvDoorLock = (TextView) inflaterMonitoring.findViewById(R.id.tvDoorLock);
+        tvStatusSensor = (TextView) inflaterMonitoring.findViewById(R.id.tvStatusSensor);
         ivIndoor = (ImageView)inflaterMonitoring.findViewById(R.id.ivIndoor);
         ivOutdoor = (ImageView)inflaterMonitoring.findViewById(R.id.ivOutdoor);
         ivDoorLock = (ImageView)inflaterMonitoring.findViewById(R.id.ivDoorLock);
+        ivStatusSensor = (ImageView)inflaterMonitoring.findViewById(R.id.ivStatusSensor);
         return inflaterMonitoring;
     }
 
@@ -155,6 +158,7 @@ public class FragmentMonitoring extends Fragment {
                         str_ussrf = obj_sensor.getString("ussrf");
                         str_magnetic = obj_sensor.getString("magnetic");
                         str_datetime = obj_sensor.getString("datetime");
+                        str_status_perangkat = obj_sensor.getString("status_perangkat");
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, e.getMessage());
@@ -190,8 +194,6 @@ public class FragmentMonitoring extends Fragment {
                         status_outdoor = "Terdeteksi Orang.";
                         ivOutdoor.setImageResource(R.mipmap.burglar);
                     }
-                    tvIndoor.setText(status_indoor);
-                    tvOutdoor.setText(status_outdoor);
                     if(str_magnetic.equals("0")){
                         status_doorlock = "AMAN";
                         ivDoorLock.setImageResource(R.mipmap.pintu_tertutup);
@@ -199,6 +201,19 @@ public class FragmentMonitoring extends Fragment {
                         status_doorlock = "Terbuka";
                         ivDoorLock.setImageResource(R.mipmap.pintu_terbuka);
                     }
+                    if(str_status_perangkat.equals("1")){
+                        tvStatusSensor.setText("Online");
+                    }else{
+                        tvStatusSensor.setText("Offline");
+                        ivIndoor.setImageResource(R.mipmap.no_data);
+                        ivOutdoor.setImageResource(R.mipmap.no_data);
+                        ivDoorLock.setImageResource(R.mipmap.no_data);
+                        status_indoor = "Sensor Offline";
+                        status_outdoor = "Sensor Offline";
+                        status_doorlock = "Sensor Offline";
+                    }
+                    tvIndoor.setText(status_indoor);
+                    tvOutdoor.setText(status_outdoor);
                     tvDoorLock.setText(status_doorlock);
                 }else{
                     ivIndoor.setImageResource(R.mipmap.no_data);

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import static android.content.ContentValues.TAG;
 public class FragmentMonitoring extends Fragment {
 
     TextView tvIndoor, tvOutdoor, tvDoorLock;
+    ImageView ivIndoor, ivOutdoor, ivDoorLock;
 
     SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -72,6 +74,9 @@ public class FragmentMonitoring extends Fragment {
         tvIndoor = (TextView) inflaterMonitoring.findViewById(R.id.tvIndoor);
         tvOutdoor = (TextView) inflaterMonitoring.findViewById(R.id.tvOutdoor);
         tvDoorLock = (TextView) inflaterMonitoring.findViewById(R.id.tvDoorLock);
+        ivIndoor = (ImageView)inflaterMonitoring.findViewById(R.id.ivIndoor);
+        ivOutdoor = (ImageView)inflaterMonitoring.findViewById(R.id.ivOutdoor);
+        ivDoorLock = (ImageView)inflaterMonitoring.findViewById(R.id.ivDoorLock);
         return inflaterMonitoring;
     }
 
@@ -160,21 +165,27 @@ public class FragmentMonitoring extends Fragment {
                 if(loaddata){
                     String status_indoor, status_outdoor,status_doorlock;
                     if(str_indoor.equals("0")){
-                        status_indoor = "Status : Kondisi aman.";
+                        status_indoor = "AMAN";
+                        ivIndoor.setImageResource(R.mipmap.home_secure);
                     }else{
-                        status_indoor = "Status : Terdeteksi orang.";
+                        status_indoor = "Terdeteksi Orang";
+                        ivIndoor.setImageResource(R.mipmap.burglar);
                     }
                     if(str_outdoor.equals("0")){
-                        status_outdoor = "Status : Kondisi aman.";
+                        status_outdoor = "AMAN";
+                        ivOutdoor.setImageResource(R.mipmap.home_secure);
                     }else{
-                        status_outdoor = "Status : Terdeteksi orang.";
+                        status_outdoor = "Terdeteksi Orang.";
+                        ivOutdoor.setImageResource(R.mipmap.burglar);
                     }
                     tvIndoor.setText(status_indoor);
                     tvOutdoor.setText(status_outdoor);
                     if(str_magnetic.equals("0")){
-                        status_doorlock = "Pintu tertutup";
+                        status_doorlock = "AMAN";
+                        ivDoorLock.setImageResource(R.mipmap.pintu_tertutup);
                     }else{
-                        status_doorlock = "Pintu terbuka";
+                        status_doorlock = "Terbuka";
+                        ivDoorLock.setImageResource(R.mipmap.pintu_terbuka);
                     }
                     tvDoorLock.setText(status_doorlock);
                 }else{

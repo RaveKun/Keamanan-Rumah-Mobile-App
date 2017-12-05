@@ -3,11 +3,10 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
     <ImageView
         android:id="@+id/ivUser"
-        android:layout_width="175px"
-        android:layout_height="175px"
+        android:layout_width="128px"
+        android:layout_height="128px"
         android:padding="5dp"
         android:src="@mipmap/user_active"/>
     <LinearLayout
@@ -19,7 +18,7 @@
             android:id="@+id/tvNama"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:text="Nama User"/>
         <TextView

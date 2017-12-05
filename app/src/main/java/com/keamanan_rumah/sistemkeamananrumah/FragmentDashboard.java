@@ -30,9 +30,8 @@ import static android.content.ContentValues.TAG;
 public class FragmentDashboard extends Fragment {
 
 
-    TextView tvActive,tvBlocked,tvTotalRecord,tvRecordToday;
-    LinearLayout llNoNetwork,llNetworkAvailable;
-
+    TextView tvActive,tvBlocked,tvTotalRecord,tvRecordToday,tvJumlahKoordinator,tvJumlahSibling,tvRequestBukaBlock,tvPerangkatAktif;
+    LinearLayout llNoNetwork,llNetworkAvailable,llAdminOnly;
 
     SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -44,6 +43,10 @@ public class FragmentDashboard extends Fragment {
     String user_block;
     String database_today;
     String database_total;
+    String jml_koordinator;
+    String jml_sibling;
+    String request_open;
+    String perangkat_aktif;
     String url;
 
     public static String pref_id;
@@ -74,10 +77,15 @@ public class FragmentDashboard extends Fragment {
         View inflaterDashboard = inflater.inflate(R.layout.fragment_dashboard, container, false);
         llNetworkAvailable = (LinearLayout) inflaterDashboard.findViewById(R.id.llNetworkAvailable);
         llNoNetwork = (LinearLayout) inflaterDashboard.findViewById(R.id.llNoNetwork);
+        llAdminOnly = (LinearLayout) inflaterDashboard.findViewById(R.id.llAdminOnly);
         tvActive = (TextView) inflaterDashboard.findViewById(R.id.tvActive);
         tvBlocked = (TextView) inflaterDashboard.findViewById(R.id.tvBlocked);
         tvRecordToday = (TextView) inflaterDashboard.findViewById(R.id.tvRecordToday);
         tvTotalRecord = (TextView) inflaterDashboard.findViewById(R.id.tvTotalRecord);
+        tvJumlahKoordinator = (TextView) inflaterDashboard.findViewById(R.id.tvJumlahKoordinator);
+        tvJumlahSibling =  (TextView) inflaterDashboard.findViewById(R.id.tvJumlahSibling);
+        tvRequestBukaBlock = (TextView) inflaterDashboard.findViewById(R.id.tvRequestBukaBlock);
+        tvPerangkatAktif = (TextView) inflaterDashboard.findViewById(R.id.tvPerangkatAktif);
         return inflaterDashboard;
     }
 
@@ -152,6 +160,20 @@ public class FragmentDashboard extends Fragment {
                     JSONObject obj_database = database.getJSONObject(0);
                     database_today = obj_database.getString("jumlah_record_today");
                     database_total = obj_database.getString("jumlah_record_total");
+                    if(pref_tipe.equals("1")){
+                        JSONArray jumlah_koordinator = response.getJSONArray("jumlah_koordinator");
+                        JSONObject obj_koordinator = jumlah_koordinator.getJSONObject(0);
+                        jml_koordinator = obj_koordinator.getString("jumlah_koordinator");
+                        JSONArray jumlah_sibling = response.getJSONArray("jumlah_sibling");
+                        JSONObject obj_sibling = jumlah_sibling.getJSONObject(0);
+                        jml_sibling = obj_sibling.getString("jumlah_sibling");
+                        JSONArray request_buka_block = response.getJSONArray("request_buka_block");
+                        JSONObject obj_request = request_buka_block.getJSONObject(0);
+                        request_open = obj_request.getString("request_buka_block");
+                        JSONArray total_perangkat_aktif = response.getJSONArray("total_perangkat_aktif");
+                        JSONObject obj_perangkat_aktif = total_perangkat_aktif.getJSONObject(0);
+                        perangkat_aktif = obj_perangkat_aktif.getString("jumlah_perangkat_aktif");
+                    }
                 } catch (final JSONException e) {
                     Log.e(TAG, e.getMessage());
                 }
@@ -170,10 +192,19 @@ public class FragmentDashboard extends Fragment {
             if(loaddata){
                 llNetworkAvailable.setVisibility(View.VISIBLE);
                 llNoNetwork.setVisibility(View.GONE);
-                tvActive.setText("Total User : " + user_total);
-                tvBlocked.setText("User blocked : " + user_block);
-                tvRecordToday.setText("Data hari ini : " + database_today);
-                tvTotalRecord.setText("Total data : " + database_total);
+                tvActive.setText(user_total);
+                tvBlocked.setText(user_block);
+                tvRecordToday.setText(database_today);
+                tvTotalRecord.setText(database_total);
+                if(pref_tipe.equals("1")){
+                    llAdminOnly.setVisibility(View.VISIBLE);
+                    tvJumlahKoordinator.setText(jml_koordinator);
+                    tvJumlahSibling.setText(jml_sibling);
+                    tvRequestBukaBlock.setText(request_open);
+                    tvPerangkatAktif.setText(perangkat_aktif);
+                }else{
+                    llAdminOnly.setVisibility(View.GONE);
+                }
             }else{
                 llNetworkAvailable.setVisibility(View.GONE);
                 llNoNetwork.setVisibility(View.VISIBLE);

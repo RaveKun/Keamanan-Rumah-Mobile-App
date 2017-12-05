@@ -17,7 +17,7 @@
                 android:gravity="center"
                 android:textColor="#FFFFFF"
                 android:textSize="24dp"
-                android:text="REQUEST OPEN BLOCK"/>
+                android:text="APPROVE OPEN BLOCK"/>
         </LinearLayout>
         <!--Notif-->
         <LinearLayout
@@ -108,12 +108,12 @@
                     android:padding="5dp"
                     android:orientation="vertical">
                     <Button
-                        android:id="@+id/btnRequestOpen"
+                        android:id="@+id/btnApprove"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="#1bbc9b"
                         android:layout_marginBottom="5dp"
-                        android:text="Request Open"/>
+                        android:text="Approve"/>
                     <Button
                         android:id="@+id/btnKembali"
                         android:layout_width="match_parent"

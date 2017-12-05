@@ -2,6 +2,7 @@ package com.keamanan_rumah.sistemkeamananrumah;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -157,7 +159,22 @@ public class FragmentKelolaPerangkat extends Fragment {
                         if(btnKelolaPerangkat.getText().toString().equals("Non-Aktifkan")){
                             param_update = non_aktifkan.concat("/").concat(pref_api_key).concat("/").concat(pref_id).concat("/");
                         }
-                        new AsyncUpdatePerangkat().execute();
+                        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                        alertDialog.setTitle("Konfirmasi");
+                        alertDialog.setMessage("Apakah Anda yakin akan mengubah status monitoring ?");
+                        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ya", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                new AsyncUpdatePerangkat().execute();
+                            }
+                        });
+                        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Tidak", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                alertDialog.dismiss();
+                            }
+                        });
+                        alertDialog.show();
                     }else{
                         llNotif.setVisibility(View.VISIBLE);
                         tvNotif.setText("Secure Key yang Anda masukkan tidak cocok.");

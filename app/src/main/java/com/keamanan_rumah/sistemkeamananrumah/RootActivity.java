@@ -103,6 +103,8 @@ public class RootActivity extends AppCompatActivity
             fragment = new FragmentTambahPengguna();
         }else if (id == R.id.nav_daftar_pengguna) {
             fragment = new FragmentDaftarPengguna();
+        }else if (id == R.id.nav_approve_request_open) {
+            fragment = new FragmentApproveRequestOpen();
         }else if (id == R.id.actionLogout){
             stopService(new Intent(getBaseContext(), BackgroundService.class));
             SharedPreferences preferences = getApplicationContext().getSharedPreferences("KEAMANAN_RUMAH", 0);

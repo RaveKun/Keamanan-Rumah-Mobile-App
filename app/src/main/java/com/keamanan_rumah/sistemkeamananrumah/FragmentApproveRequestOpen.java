@@ -1,5 +1,6 @@
 package com.keamanan_rumah.sistemkeamananrumah;
 
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -36,7 +37,7 @@ import java.util.List;
 import static android.content.ContentValues.TAG;
 
 
-public class FragmentRequestOpen extends Fragment {
+public class FragmentApproveRequestOpen extends Fragment {
 
     ProgressDialog pDialog;
 
@@ -49,7 +50,7 @@ public class FragmentRequestOpen extends Fragment {
     ListView lvPengguna;
     TextView tvNotif;
     EditText etUsername, etTipe;
-    Button btnRequestOpen, btnKembali;
+    Button btnApprove, btnKembali;
 
     SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -82,19 +83,23 @@ public class FragmentRequestOpen extends Fragment {
     public static String api_delete_pengguna;
     public static String api_load_blocked_user;
     public static String api_request_open_block;
+    public static String api_load_request_block;
+    public static String api_approve_request_open;
 
     String status_cek, message, message_severity;
-    String arr_id[];
+    String arr_id_request[];
+    String arr_id_user_blocked[];
     String arr_username[];
     String arr_nama[];
     String arr_status[];
     String arr_tipe[];
-    String selected_id;
+    String selected_id_user;
+    String selected_id_request;
     String selected_username,selected_tipe;
 
     public int len;
 
-    public FragmentRequestOpen() {
+    public FragmentApproveRequestOpen() {
     }
 
     @Override
@@ -104,7 +109,7 @@ public class FragmentRequestOpen extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View inflaterDaftarPengguna = inflater.inflate(R.layout.fragment_request_open, container, false);
+        View inflaterDaftarPengguna = inflater.inflate(R.layout.fragment_approve_request_open, container, false);
         llRequestOpen = (LinearLayout) inflaterDaftarPengguna.findViewById(R.id.llRequestOpen);
         llNetworkAvailable = (LinearLayout) inflaterDaftarPengguna.findViewById(R.id.llNetworkAvailable);
         llNoNetwork = (LinearLayout) inflaterDaftarPengguna.findViewById(R.id.llNoNetwork);
@@ -114,7 +119,7 @@ public class FragmentRequestOpen extends Fragment {
         etUsername = (EditText) inflaterDaftarPengguna.findViewById(R.id.etUsername);
         etTipe = (EditText) inflaterDaftarPengguna.findViewById(R.id.etTipeAccount);
         btnKembali = (Button) inflaterDaftarPengguna.findViewById(R.id.btnKembali);
-        btnRequestOpen = (Button) inflaterDaftarPengguna.findViewById(R.id.btnRequestOpen);
+        btnApprove = (Button) inflaterDaftarPengguna.findViewById(R.id.btnApprove);
         return inflaterDaftarPengguna;
     }
 
@@ -144,6 +149,8 @@ public class FragmentRequestOpen extends Fragment {
         api_delete_pengguna = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_delete_pengguna));
         api_load_blocked_user = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_load_blocked_user));
         api_request_open_block = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_request_open_block));
+        api_load_request_block = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_load_request_block));
+        api_approve_request_open = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_approve_request_open));
 
 
         llNoNetwork.setVisibility(View.GONE);
@@ -159,7 +166,7 @@ public class FragmentRequestOpen extends Fragment {
         btnKembali.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AsyncBlockedPengguna().execute();
+                new AsyncListRequestOpen().execute();
                 llNotif.setVisibility(View.GONE);
                 tvNotif.setText("");
                 llNoNetwork.setVisibility(View.GONE);
@@ -168,16 +175,16 @@ public class FragmentRequestOpen extends Fragment {
             }
         });
 
-        btnRequestOpen.setOnClickListener(new View.OnClickListener() {
+        btnApprove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
                 alertDialog.setTitle("Konfirmasi");
-                alertDialog.setMessage("Apakah Anda yakin akan melakukan request open block ?");
+                alertDialog.setMessage("Apakah Anda yakin akan melakukan approval terhadap request open block ?");
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ya", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        new AsyncRequestOpen().execute();
+                        new AsyncApprove().execute();
                     }
                 });
                 alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Tidak", new DialogInterface.OnClickListener() {
@@ -190,10 +197,10 @@ public class FragmentRequestOpen extends Fragment {
             }
         });
 
-        new AsyncBlockedPengguna().execute();
+        new AsyncListRequestOpen().execute();
     }
 
-    private class AsyncBlockedPengguna extends AsyncTask<Void, Void, Void> {
+    private class AsyncListRequestOpen extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             pDialog = new ProgressDialog(getContext());
@@ -207,7 +214,7 @@ public class FragmentRequestOpen extends Fragment {
         protected Void doInBackground(Void... arg0) {
             Log.d(TAG, "Do in background");
             HTTPSvc sh = new HTTPSvc();
-            url = api_load_blocked_user.concat(pref_api_key).concat("/");
+            url = api_load_request_block;
             Log.d(TAG,url);
             JSON_data = sh.makeServiceCall(url, HTTPSvc.POST);
             if(JSON_data!=null){
@@ -215,17 +222,19 @@ public class FragmentRequestOpen extends Fragment {
                     JSONObject jsonObj = new JSONObject(JSON_data);
                     JSONArray response = jsonObj.getJSONArray("response");
                     len = response.length();
-                    arr_id = new String[len];
+                    arr_id_request = new String[len];
+                    arr_id_user_blocked = new String[len];
                     arr_username = new String[len];
                     arr_nama = new String[len];
                     arr_tipe = new String[len];
                     arr_status = new String[len];
                     for(int x=0;x<len;x++){
                         JSONObject obj_pengguna = response.getJSONObject(x);
-                        arr_id[x] = obj_pengguna.getString("id");
+                        arr_id_request[x] = obj_pengguna.getString("id");
+                        arr_id_user_blocked[x] = obj_pengguna.getString("user_blocked");
                         arr_username[x] = obj_pengguna.getString("username");
                         arr_nama[x] = obj_pengguna.getString("nama");
-                        arr_status[x] = obj_pengguna.getString("status");
+                        arr_status[x] = "2";
                         arr_tipe[x] = obj_pengguna.getString("tipe");
                     }
                     loaddata=true;
@@ -272,14 +281,14 @@ public class FragmentRequestOpen extends Fragment {
                             selected_username = tvUs.getText().toString();
                             for(int x = 0;x < arr_username.length;x++){
                                 if(arr_username[x].equals(selected_username)){
-                                    selected_id = arr_id[x];
+                                    selected_id_user = arr_id_user_blocked[x];
+                                    selected_id_request = arr_id_request[x];
                                     etUsername.setText(selected_username);
                                     etTipe.setText(arr_tipe[x]);
-                                    Toast.makeText(getActivity(),"ID user : " + selected_id,Toast.LENGTH_LONG).show();
                                     if(tvSt.getText().toString().equals("On proccess request open")){
-                                        btnRequestOpen.setVisibility(View.GONE);
+                                        btnApprove.setVisibility(View.GONE);
                                     }else{
-                                        btnRequestOpen.setVisibility(View.VISIBLE);
+                                        btnApprove.setVisibility(View.VISIBLE);
                                     }
                                 }
                             }
@@ -301,7 +310,7 @@ public class FragmentRequestOpen extends Fragment {
         }
     }
 
-    private class AsyncRequestOpen extends AsyncTask<Void, Void, Void> {
+    private class AsyncApprove extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             pDialog = new ProgressDialog(getContext());
@@ -315,10 +324,10 @@ public class FragmentRequestOpen extends Fragment {
         protected Void doInBackground(Void... arg0) {
             Log.d(TAG, "Do in background");
             HTTPSvc sh = new HTTPSvc();
-            data_request.add(new BasicNameValuePair("user_blocked", selected_id));
-            data_request.add(new BasicNameValuePair("user_request", pref_id));
-            data_request.add(new BasicNameValuePair("status", "1"));
-            String url = api_request_open_block.concat(pref_tipe);
+            data_request.add(new BasicNameValuePair("id_request", selected_id_request));
+            data_request.add(new BasicNameValuePair("id_user", selected_id_user));
+            data_request.add(new BasicNameValuePair("status", "2"));
+            String url = api_approve_request_open;
             String JSON_data = sh.makeServiceCall(url, HTTPSvc.POST, data_request);
             if(JSON_data!=null){
                 try {
@@ -349,10 +358,11 @@ public class FragmentRequestOpen extends Fragment {
                 tvNotif.setText(message);
                 if(status_cek.equals("SUCCESS")){
                     lvPengguna.setVisibility(View.GONE);
+                    llRequestOpen.setVisibility(View.GONE);
                     llNetworkAvailable.setVisibility(View.VISIBLE);
                     llNoNetwork.setVisibility(View.GONE);
                     llNotif.setVisibility(View.VISIBLE);
-                    btnRequestOpen.setVisibility(View.GONE);
+                    btnApprove.setVisibility(View.GONE);
                 }
                 if(message_severity.equals("success")){
                     tvNotif.setBackgroundColor(Color.parseColor("#A5D6A7"));
@@ -370,3 +380,4 @@ public class FragmentRequestOpen extends Fragment {
         }
     }
 }
+

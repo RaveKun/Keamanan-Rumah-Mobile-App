@@ -26,6 +26,8 @@
     <string name="api_notif">recent/</string>
     <string name="api_load_blocked_user">load_blocked_user_by_api_key/</string>
     <string name="api_request_open_block">request_open_block/</string>
+    <string name="api_load_request_block">load_request_block/</string>
+    <string name="api_approve_request_open">do_approve/</string>
     <string name="title_activity_root">RootActivity</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>

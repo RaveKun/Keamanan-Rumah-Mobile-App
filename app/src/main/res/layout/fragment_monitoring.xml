@@ -233,6 +233,35 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/llInformasiHardware"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/box"
+                android:orientation="vertical"
+                android:layout_margin="5dp">
+                <ImageView
+                    android:id="@+id/ivInformasiHardware"
+                    android:src="@mipmap/warning"
+                    android:layout_width="64px"
+                    android:layout_height="64px"
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="fill_vertical"
+                    android:textColor="#666"
+                    android:textSize="14sp"
+                    android:text="Informasi"
+                    android:textAlignment="center"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/tvInformasiHardware"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textStyle="italic"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

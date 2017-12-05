@@ -19,6 +19,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -28,7 +31,7 @@ public class FragmentMonitoring extends Fragment {
 
     LinearLayout llNoNetwork, llNetworkAvailable;
 
-    TextView tvIndoor, tvOutdoor, tvDoorLock,tvStatusSensor;
+    TextView tvIndoor, tvOutdoor, tvDoorLock,tvStatusSensor, tvInformasiHardware;
     ImageView ivIndoor, ivOutdoor, ivDoorLock,ivStatusSensor;
 
     SharedPreferences pref;
@@ -46,6 +49,7 @@ public class FragmentMonitoring extends Fragment {
     String str_magnetic;
     String str_datetime;
     String str_status_perangkat;
+    String str_datetime_perangkat;
 
     int ln = 0;
 
@@ -83,6 +87,7 @@ public class FragmentMonitoring extends Fragment {
         tvOutdoor = (TextView) inflaterMonitoring.findViewById(R.id.tvOutdoor);
         tvDoorLock = (TextView) inflaterMonitoring.findViewById(R.id.tvDoorLock);
         tvStatusSensor = (TextView) inflaterMonitoring.findViewById(R.id.tvStatusSensor);
+        tvInformasiHardware = (TextView) inflaterMonitoring.findViewById(R.id.tvInformasiHardware);
         ivIndoor = (ImageView)inflaterMonitoring.findViewById(R.id.ivIndoor);
         ivOutdoor = (ImageView)inflaterMonitoring.findViewById(R.id.ivOutdoor);
         ivDoorLock = (ImageView)inflaterMonitoring.findViewById(R.id.ivDoorLock);
@@ -159,6 +164,7 @@ public class FragmentMonitoring extends Fragment {
                         str_magnetic = obj_sensor.getString("magnetic");
                         str_datetime = obj_sensor.getString("datetime");
                         str_status_perangkat = obj_sensor.getString("status_perangkat");
+                        str_datetime_perangkat = obj_sensor.getString("datetime_perangkat");
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, e.getMessage());
@@ -203,11 +209,13 @@ public class FragmentMonitoring extends Fragment {
                     }
                     if(str_status_perangkat.equals("1")){
                         tvStatusSensor.setText("Online");
+                        tvInformasiHardware.setText("Data terakhir dikirim pada \n" + str_datetime);
                     }else{
                         tvStatusSensor.setText("Offline");
                         ivIndoor.setImageResource(R.mipmap.no_data);
                         ivOutdoor.setImageResource(R.mipmap.no_data);
                         ivDoorLock.setImageResource(R.mipmap.no_data);
+                        tvInformasiHardware.setText("Sensor offline sejak \n" + str_datetime_perangkat);
                         status_indoor = "Sensor Offline";
                         status_outdoor = "Sensor Offline";
                         status_doorlock = "Sensor Offline";
@@ -215,6 +223,41 @@ public class FragmentMonitoring extends Fragment {
                     tvIndoor.setText(status_indoor);
                     tvOutdoor.setText(status_outdoor);
                     tvDoorLock.setText(status_doorlock);
+                    String sekarang = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    try {
+                        Date date1 = simpleDateFormat.parse(str_datetime);
+                        Date date2 = simpleDateFormat.parse(sekarang);
+                        long different = date2.getTime() - date1.getTime();
+                        long secondsInMilli = 1000;
+                        long minutesInMilli = secondsInMilli * 60;
+                        long hoursInMilli = minutesInMilli * 60;
+                        long daysInMilli = hoursInMilli * 24;
+                        long elapsedDays = different / daysInMilli;
+                        different = different % daysInMilli;
+                        long elapsedHours = different / hoursInMilli;
+                        different = different % hoursInMilli;
+                        Log.d("diference : ",String.valueOf(different));
+                        if(different > 60000 && str_status_perangkat.equals("1")){
+                            long elapsedMinutes = different / minutesInMilli;
+                            different = different % minutesInMilli;
+                            long elapsedSeconds = different / secondsInMilli;
+                            Log.d("Hari : ",String.valueOf(elapsedDays));
+                            Log.d("Jam : ",String.valueOf(elapsedHours));
+                            Log.d("Menit : ",String.valueOf(elapsedMinutes));
+                            Log.d("Detik : ",String.valueOf(elapsedSeconds));
+                            tvInformasiHardware.setText(
+                                "Harap periksa kondisi sensor." + "\n" +
+                                "Data terakhir dikirim pada \n" + str_datetime_perangkat + ".\n" +
+                                "Sensor tidak mengirimkan data selama : " + "\n" +
+                                String.valueOf(elapsedDays) + " Hari" + "\n" +
+                                String.valueOf(elapsedHours) + " Jam" + "\n" +
+                                String.valueOf(elapsedMinutes) + " Menit" + "\n" +
+                                String.valueOf(elapsedSeconds) + " Detik");
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }else{
                     ivIndoor.setImageResource(R.mipmap.no_data);
                     ivOutdoor.setImageResource(R.mipmap.no_data);
@@ -222,6 +265,7 @@ public class FragmentMonitoring extends Fragment {
                     tvIndoor.setText("Tidak ada data");
                     tvOutdoor.setText("Tidak ada data");
                     tvDoorLock.setText("Tidak ada data");
+                    tvInformasiHardware.setText("Tidak ada data");
                 }
             }else {
                 llNetworkAvailable.setVisibility(View.GONE);

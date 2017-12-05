@@ -46,6 +46,7 @@ public class BackgroundService extends Service {
     String magnetic;
     String recent_data = "";
 
+    int ln = 0;
 
     public static String pref_id;
     public static String pref_username;
@@ -123,14 +124,17 @@ public class BackgroundService extends Service {
                 try {
                     JSONObject jsonObj = new JSONObject(JSON_data);
                     JSONArray response = jsonObj.getJSONArray("response");
-                    JSONObject obj_sensor = response.getJSONObject(0);
-                    str_id = obj_sensor.getString("id");
-                    str_state = obj_sensor.getString("state");
-                    str_indoor = obj_sensor.getString("indoor");
-                    str_outdoor = obj_sensor.getString("outdoor");
-                    str_ussrf = obj_sensor.getString("ussrf");
-                    str_magnetic = obj_sensor.getString("magnetic");
-                    str_datetime = obj_sensor.getString("datetime");
+                    ln = response.length();
+                    if(ln > 0){
+                        JSONObject obj_sensor = response.getJSONObject(0);
+                        str_id = obj_sensor.getString("id");
+                        str_state = obj_sensor.getString("state");
+                        str_indoor = obj_sensor.getString("indoor");
+                        str_outdoor = obj_sensor.getString("outdoor");
+                        str_ussrf = obj_sensor.getString("ussrf");
+                        str_magnetic = obj_sensor.getString("magnetic");
+                        str_datetime = obj_sensor.getString("datetime");
+                    }
                 } catch (final JSONException e) {
                     Log.e("Service Keamanan Rumah", e.getMessage());
                 }
@@ -146,7 +150,7 @@ public class BackgroundService extends Service {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            if(loaddata){
+            if(loaddata && (ln > 0)){
                 if(!str_state.equals("") ){
                     exp = str_state.split("_");
                     outdoor = exp[0];
@@ -155,7 +159,6 @@ public class BackgroundService extends Service {
                     Log.d("outdoor :" , outdoor);
                     Log.d("indoor :" ,indoor);
                     Log.d("magnetic :" , magnetic);
-
                     if((indoor.equals("SIAGA") || indoor.equals("AWAS") || outdoor.equals("SIAGA") || outdoor.equals("AWAS") || magnetic.equals("SIAGA") || magnetic.equals("AWAS")) && !str_state.equals(recent_data)){
                         Notification.Builder builder = new Notification.Builder(getApplication().getBaseContext());
                         Intent notificationIntent = null;

@@ -42,6 +42,10 @@
                 android:id="@+id/nav_kelola_perangkat"
                 android:icon="@drawable/ic_kelola_perangkat"
                 android:title="Kelola Perangkat" />
+            <item
+                android:id="@+id/nav_download_laporan"
+                android:icon="@drawable/ic_download_laporan"
+                android:title="Log Perangkat" />
         </menu>
     </item>
 </menu>

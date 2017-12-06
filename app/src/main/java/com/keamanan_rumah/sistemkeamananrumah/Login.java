@@ -25,6 +25,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
+
 public class Login extends AppCompatActivity {
 
     List<NameValuePair> data_login = new ArrayList<NameValuePair>(7);
@@ -38,13 +40,20 @@ public class Login extends AppCompatActivity {
 
     String u,p;
     String api_login;
+    String api_block;
     String TAG;
     String status_cek,message,message_severity;
     String id, username, nama, tipe, API_KEY, secure_key, waktu;
     String pref_tipe;
     String JSON_data;
+    String affected_rows;
+
 
     Boolean loaddata;
+
+    int ln;
+
+    int counter_not_match = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +84,7 @@ public class Login extends AppCompatActivity {
         }
         TAG = getResources().getString(R.string.TAG);
         api_login= getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_login));
+        api_block = getResources().getString(R.string.api_site_url).concat(getResources().getString(R.string.api_block));
         btnDaftar = (Button)findViewById(R.id.btnDaftar);
         btnLogin = (Button)findViewById(R.id.btnLogin);
         editUsername = (EditText)findViewById(R.id.editUsername);
@@ -207,9 +217,18 @@ public class Login extends AppCompatActivity {
                         startActivity(i);
                     }
                     finish();
-                }else{
-                    tvNotif.setText(message);
+                }else
+                if(status_cek.equals("NOT MATCH")) {
+                    Log.d("counter not match ", String.valueOf(counter_not_match));
+                    counter_not_match++;
+                    if(counter_not_match == 3){
+                        new AsyncBlock().execute();
+                    }
                 }
+                if(counter_not_match > 3){
+                    message = "User Anda diblock secara otomatis karena salah password lebih dari 3x";
+                }
+                tvNotif.setText(message);
                 if(message_severity.equals("success")){
                     tvNotif.setBackgroundColor(Color.parseColor("#A5D6A7"));
                 }else
@@ -221,6 +240,54 @@ public class Login extends AppCompatActivity {
                 }
             }else{
                 tvNotif.setText("Error! ");
+                tvNotif.setBackgroundColor(Color.parseColor("#EF9A9A"));
+            }
+        }
+    }
+
+    private class AsyncBlock extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            pDialog = new ProgressDialog(Login.this);
+            pDialog.setMessage("Blocking account...");
+            pDialog.setCancelable(false);
+            pDialog.show();
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            Log.d(TAG, "Do in background");
+            HTTPSvc sh = new HTTPSvc();
+            String url = api_block.concat(editUsername.getText().toString());
+            JSON_data = sh.makeServiceCall(url, HTTPSvc.GET);
+            if(JSON_data!=null){
+                try {
+                    JSONObject jsonObj = new JSONObject(JSON_data);
+                    JSONObject response = jsonObj.getJSONObject("response");
+                    affected_rows = response.getString("affected_rows");
+                } catch (final JSONException e) {
+                    Log.e(TAG, e.getMessage());
+                }
+                loaddata=true;
+            }
+            else{
+                loaddata=false;
+            }
+            Log.d(TAG, "JSON data : " + JSON_data);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            if(pDialog.isShowing()){
+                pDialog.dismiss();
+            }
+            if(loaddata){
+
+            }else{
+                tvNotif.setText("Error, terjadi kendala saat terhubung ke server.");
                 tvNotif.setBackgroundColor(Color.parseColor("#EF9A9A"));
             }
         }

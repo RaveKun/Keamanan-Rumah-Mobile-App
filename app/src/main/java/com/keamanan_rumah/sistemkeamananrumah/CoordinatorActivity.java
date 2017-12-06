@@ -120,6 +120,10 @@ public class CoordinatorActivity extends AppCompatActivity
             fragment = new FragmentRequestOpen();
         }else if (id == R.id.nav_download_laporan) {
             fragment = new FragmentDownloadReport();
+        }else if (id == R.id.actionTentang){
+            fragment = new FragmentTentang();
+        }else if (id == R.id.actionBantuan){
+            fragment = new FragmentBantuan();
         }else if (id == R.id.actionLogout){
             stopService(new Intent(getBaseContext(), BackgroundService.class));
             SharedPreferences preferences = getApplicationContext().getSharedPreferences("KEAMANAN_RUMAH", 0);
@@ -130,6 +134,7 @@ public class CoordinatorActivity extends AppCompatActivity
             startActivity(i);
             finish();
         }
+
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.FrameCoordinator, fragment);

@@ -221,14 +221,14 @@ public class Login extends AppCompatActivity {
                     finish();
                 }else
                 if(status_cek.equals("NOT MATCH") && recent_user.equals(u)) {
-                    Log.d("counter not match ", String.valueOf(counter_not_match));
                     counter_not_match++;
                     if(counter_not_match == 3){
                         new AsyncBlock().execute();
                     }
                 }else{
-                    counter_not_match = 0;
+                    counter_not_match = 1;
                 }
+                Log.d("Counter not match :", String.valueOf(counter_not_match));
                 if(counter_not_match >= 3){
                     message = "User Anda diblock secara otomatis karena salah password lebih dari 3x";
                 }
@@ -290,7 +290,6 @@ public class Login extends AppCompatActivity {
                 pDialog.dismiss();
             }
             if(loaddata){
-                counter_not_match = 0 ;
             }else{
                 tvNotif.setText("Error, terjadi kendala saat terhubung ke server.");
                 tvNotif.setBackgroundColor(Color.parseColor("#EF9A9A"));

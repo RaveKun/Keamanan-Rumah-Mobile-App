@@ -45,6 +45,15 @@ public class BackgroundService extends Service {
     String indoor;
     String magnetic;
     String recent_data = "";
+    String str_datetime_perangkat;
+    String str_nama_pengubah;
+    String str_status_perangkat;
+    String str_pengubah_status;
+    String recent_status_sensor = "";
+
+    Boolean init = true;
+
+
 
     int ln = 0;
 
@@ -134,6 +143,11 @@ public class BackgroundService extends Service {
                         str_ussrf = obj_sensor.getString("ussrf");
                         str_magnetic = obj_sensor.getString("magnetic");
                         str_datetime = obj_sensor.getString("datetime");
+                        str_status_perangkat = obj_sensor.getString("status_perangkat");
+                        str_datetime_perangkat = obj_sensor.getString("datetime_perangkat");
+                        str_nama_pengubah = obj_sensor.getString("nama_pengubah_status_perangkat");
+                        str_pengubah_status = obj_sensor.getString("pengubah_status_perangkat");
+
                     }
                 } catch (final JSONException e) {
                     Log.e("Service Keamanan Rumah", e.getMessage());
@@ -183,6 +197,47 @@ public class BackgroundService extends Service {
                         notificationManager.notify(R.drawable.notification_template_icon_bg, notification);
                     }
                     recent_data = str_state;
+                }
+
+                if(!str_status_perangkat.equals(recent_status_sensor) && (init == false)){
+                    if(!pref_id.equals(str_pengubah_status)){
+                        if(pref_tipe.equals("2")){
+                            Notification.Builder builder = new Notification.Builder(getApplication().getBaseContext());
+                            Intent notificationIntent = new Intent(getApplication().getBaseContext(),CoordinatorActivity.class);
+                            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            notificationIntent.putExtra("redirect", "monitoring");
+                            PendingIntent pendingIntent = PendingIntent.getActivity(getApplication().getBaseContext(), 0,notificationIntent, 0);
+                            builder.setSmallIcon(R.mipmap.ic_launcher)
+                                    .setContentTitle("Notifikasi Keamanan Rumah")
+                                    .setContentText("Status monitoring diubah oleh " + str_nama_pengubah)
+                                    .setContentIntent(pendingIntent);
+                            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                            builder.setSound(alarmSound);
+                            NotificationManager notificationManager = (NotificationManager) getApplication().getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                            Notification notification = builder.getNotification();
+                            notificationManager.notify(R.drawable.notification_template_icon_bg, notification);
+                        }else
+                        if(pref_tipe.equals("3")){
+                            Notification.Builder builder = new Notification.Builder(getApplication().getBaseContext());
+                            Intent notificationIntent = new Intent(getApplication().getBaseContext(),SiblingActivity.class);
+                            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            notificationIntent.putExtra("redirect", "monitoring");
+                            PendingIntent pendingIntent = PendingIntent.getActivity(getApplication().getBaseContext(), 0,notificationIntent, 0);
+                            builder.setSmallIcon(R.mipmap.ic_launcher)
+                                    .setContentTitle("Notifikasi Keamanan Rumah")
+                                    .setContentText("Status monitoring diubah oleh " + str_nama_pengubah)
+                                    .setContentIntent(pendingIntent);
+                            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                            builder.setSound(alarmSound);
+                            NotificationManager notificationManager = (NotificationManager) getApplication().getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                            Notification notification = builder.getNotification();
+                            notificationManager.notify(R.drawable.notification_template_icon_bg, notification);
+                        }
+                    }
+                }
+                recent_status_sensor = str_status_perangkat;
+                if(init){
+                    init = false;
                 }
             }
         }

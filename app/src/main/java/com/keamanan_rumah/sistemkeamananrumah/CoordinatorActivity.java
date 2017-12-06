@@ -118,6 +118,8 @@ public class CoordinatorActivity extends AppCompatActivity
             fragment = new FragmentKelolaPerangkat();
         }else if (id == R.id.nav_open_request) {
             fragment = new FragmentRequestOpen();
+        }else if (id == R.id.nav_download_laporan) {
+            fragment = new FragmentDownloadReport();
         }else if (id == R.id.actionLogout){
             stopService(new Intent(getBaseContext(), BackgroundService.class));
             SharedPreferences preferences = getApplicationContext().getSharedPreferences("KEAMANAN_RUMAH", 0);

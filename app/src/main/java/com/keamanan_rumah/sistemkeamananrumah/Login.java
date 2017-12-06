@@ -47,6 +47,7 @@ public class Login extends AppCompatActivity {
     String pref_tipe;
     String JSON_data;
     String affected_rows;
+    String recent_user = "";
 
 
     Boolean loaddata;
@@ -180,6 +181,7 @@ public class Login extends AppCompatActivity {
             }
             if(loaddata){
                 if(status_cek.equals("MATCH")){
+                    counter_not_match = 0;
                     tvNotif.setText(message);
                     editUsername.setText("");
                     editPass.setText("");
@@ -218,14 +220,16 @@ public class Login extends AppCompatActivity {
                     }
                     finish();
                 }else
-                if(status_cek.equals("NOT MATCH")) {
-                    Log.d("counter not match ", String.valueOf(counter_not_match));
+                if(status_cek.equals("NOT MATCH") && recent_user.equals(u)) {
                     counter_not_match++;
                     if(counter_not_match == 3){
                         new AsyncBlock().execute();
                     }
+                }else{
+                    counter_not_match = 1;
                 }
-                if(counter_not_match > 3){
+                Log.d("Counter not match :", String.valueOf(counter_not_match));
+                if(counter_not_match >= 3){
                     message = "User Anda diblock secara otomatis karena salah password lebih dari 3x";
                 }
                 tvNotif.setText(message);
@@ -238,6 +242,7 @@ public class Login extends AppCompatActivity {
                 if(message_severity.equals("danger")){
                     tvNotif.setBackgroundColor(Color.parseColor("#EF9A9A"));
                 }
+                recent_user = u;
             }else{
                 tvNotif.setText("Error! ");
                 tvNotif.setBackgroundColor(Color.parseColor("#EF9A9A"));
@@ -285,7 +290,6 @@ public class Login extends AppCompatActivity {
                 pDialog.dismiss();
             }
             if(loaddata){
-
             }else{
                 tvNotif.setText("Error, terjadi kendala saat terhubung ke server.");
                 tvNotif.setBackgroundColor(Color.parseColor("#EF9A9A"));

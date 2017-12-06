@@ -39,7 +39,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_sibling">Keamanan Rumah</string>
-    <string name="petunjuk">Petunjuk Penggunaan \n \n
+    <string name="petunjuk">
     1. Menu Profil digunakan untuk mengubah data diri user yang sedang login.\n
     2. Menu Ubah Password digunakan untuk mengubah password dengan syarat password lama harus sesuai.\n
     3. Koordinator Keluarga dapat menambahkan anggota keluarganya. \n
@@ -110,7 +110,6 @@
         <item>2029</item>
         <item>2030</item>
     </string-array>
-
 
 
 </resources>

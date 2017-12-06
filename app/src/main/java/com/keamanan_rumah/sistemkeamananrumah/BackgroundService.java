@@ -20,6 +20,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -52,7 +55,7 @@ public class BackgroundService extends Service {
     String recent_status_sensor = "";
 
     Boolean init = true;
-
+    Boolean is_notif_show = false;
 
 
     int ln = 0;
@@ -200,6 +203,7 @@ public class BackgroundService extends Service {
                 }
 
                 if(!str_status_perangkat.equals(recent_status_sensor) && (init == false)){
+                    is_notif_show = false;
                     if(!pref_id.equals(str_pengubah_status)){
                         if(pref_tipe.equals("2")){
                             Notification.Builder builder = new Notification.Builder(getApplication().getBaseContext());
@@ -235,6 +239,53 @@ public class BackgroundService extends Service {
                         }
                     }
                 }
+
+                String sekarang = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                try {
+                    Date date1 = simpleDateFormat.parse(str_datetime_perangkat);
+                    Date date2 = simpleDateFormat.parse(sekarang);
+                    long different = date2.getTime() - date1.getTime();
+                    long secondsInMilli = 1000;
+                    long minutesInMilli = secondsInMilli * 60;
+                    long hoursInMilli = minutesInMilli * 60;
+                    long daysInMilli = hoursInMilli * 24;
+                    long elapsedDays = different / daysInMilli;
+                    different = different % daysInMilli;
+                    long elapsedHours = different / hoursInMilli;
+                    different = different % hoursInMilli;
+                    Log.d("diference : ",String.valueOf(different));
+                    if(different > 60000 && str_status_perangkat.equals("2") && is_notif_show == false){
+                        long elapsedMinutes = different / minutesInMilli;
+                        different = different % minutesInMilli;
+                        long elapsedSeconds = different / secondsInMilli;
+                        Log.d("Hari : ",String.valueOf(elapsedDays));
+                        Log.d("Jam : ",String.valueOf(elapsedHours));
+                        Log.d("Menit : ",String.valueOf(elapsedMinutes));
+                        Log.d("Detik : ",String.valueOf(elapsedSeconds));
+                        if(!pref_tipe.equals("1")){
+                            Notification.Builder builder = new Notification.Builder(getApplication().getBaseContext());
+                            Intent notificationIntent = new Intent(getApplication().getBaseContext(),CoordinatorActivity.class);
+                            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            notificationIntent.putExtra("redirect", "monitoring");
+                            PendingIntent pendingIntent = PendingIntent.getActivity(getApplication().getBaseContext(), 0,notificationIntent, 0);
+                            builder.setSmallIcon(R.mipmap.ic_launcher)
+                                    .setContentTitle("Perangkat offline sejak " + str_datetime_perangkat + ".")
+                                    .setContentText("Apakah Anda lupa menyalakan perangkat?")
+                                    .setContentIntent(pendingIntent);
+                            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                            builder.setSound(alarmSound);
+                            NotificationManager notificationManager = (NotificationManager) getApplication().getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                            Notification notification = builder.getNotification();
+                            notificationManager.notify(R.drawable.notification_template_icon_bg, notification);
+                            is_notif_show = true;
+                        }
+
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
                 recent_status_sensor = str_status_perangkat;
                 if(init){
                     init = false;

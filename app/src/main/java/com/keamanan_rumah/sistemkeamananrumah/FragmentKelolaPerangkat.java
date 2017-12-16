@@ -219,7 +219,7 @@ public class FragmentKelolaPerangkat extends Fragment {
                 });
             }
         };
-        timer.schedule(doAsynchronousTask, 0, 1000);
+        timer.schedule(doAsynchronousTask, 0, 10000);
     }
 
     private class AsyncStatusPerangkat extends AsyncTask<Void, Void, Void> {

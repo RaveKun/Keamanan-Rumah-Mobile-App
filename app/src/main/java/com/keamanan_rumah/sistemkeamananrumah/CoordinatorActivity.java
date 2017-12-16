@@ -1,12 +1,15 @@
 package com.keamanan_rumah.sistemkeamananrumah;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+//import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class CoordinatorActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -23,9 +27,15 @@ public class CoordinatorActivity extends AppCompatActivity
     Fragment fragment;
     Dialog dialBox;
 
+    public static boolean isInFront;
+    public static Activity act;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        act = this;
+
         setContentView(R.layout.activity_coordinator);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -40,18 +50,35 @@ public class CoordinatorActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
-        String redirect = "";
+        String redirect ;
         Intent i = getIntent();
         redirect = i.getStringExtra("redirect");
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-        if(redirect.equals("monitoring")){
-            tx.replace(R.id.FrameCoordinator, new FragmentMonitoring());
-        }else
-        if(redirect.equals("dashboard")){
+        if (redirect != null) {
+            if(redirect.equals("monitoring")){
+                tx.replace(R.id.FrameCoordinator, new FragmentMonitoring());
+                Toast.makeText(CoordinatorActivity.this,redirect,Toast.LENGTH_LONG).show();
+            }else
+            if(redirect.equals("dashboard")){
+                tx.replace(R.id.FrameCoordinator, new FragmentDashboard());
+                Toast.makeText(CoordinatorActivity.this,redirect,Toast.LENGTH_LONG).show();
+            }
+        } else {
             tx.replace(R.id.FrameCoordinator, new FragmentDashboard());
+
+            Toast.makeText(CoordinatorActivity.this,redirect,Toast.LENGTH_LONG).show();
         }
         tx.commit();
         dialBox = createDialogBox();
+
+//
+//        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+//        if(redirect.equals("monitoring")){
+//            tx.replace(R.id.FrameCoordinator, new FragmentMonitoring());
+//        }else
+//        if(redirect.equals("dashboard")){
+//            tx.replace(R.id.FrameCoordinator, new FragmentDashboard());
+//        }
     }
 
     @Override
@@ -67,11 +94,13 @@ public class CoordinatorActivity extends AppCompatActivity
     @Override
     public void onPause() {
         super.onPause();
+        isInFront = false;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        isInFront = true;
     }
 
     @Override

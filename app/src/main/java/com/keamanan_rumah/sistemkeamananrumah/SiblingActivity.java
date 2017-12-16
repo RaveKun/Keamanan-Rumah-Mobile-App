@@ -1,5 +1,6 @@
 package com.keamanan_rumah.sistemkeamananrumah;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,9 +23,15 @@ public class SiblingActivity extends AppCompatActivity
     Fragment fragment;
     Dialog dialBox;
 
+    public static boolean isInFront;
+    public static Activity act;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        act = this;
+
         setContentView(R.layout.activity_sibling);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -67,13 +74,14 @@ public class SiblingActivity extends AppCompatActivity
     @Override
     public void onPause() {
         super.onPause();
+        isInFront = false;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        isInFront = true;
     }
-
     @Override
     public void onDestroy() {
         super.onDestroy();

@@ -110,7 +110,7 @@ public class BackgroundService extends Service {
                 });
             }
         };
-        timer.schedule(doAsynchronousTask, 0, 1000);
+        timer.schedule(doAsynchronousTask, 0, 10000);
         return START_STICKY;
     }
 
@@ -181,12 +181,25 @@ public class BackgroundService extends Service {
                         Intent notificationIntent = null;
                         if(pref_tipe.equals("2")){
                             notificationIntent = new Intent(getApplication().getBaseContext(),CoordinatorActivity.class);
-
+                            if(CoordinatorActivity.isInFront){
+                                CoordinatorActivity.act.finish();
+                                Intent i = new Intent(getApplication().getBaseContext(),CoordinatorActivity.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                i.putExtra("redirect","monitoring");
+                                startActivity(i);
+                            }
                         }else
                         if(pref_tipe.equals("3")){
                             notificationIntent = new Intent(getApplication().getBaseContext(),SiblingActivity.class);
+                            if(SiblingActivity.isInFront){
+                                CoordinatorActivity.act.finish();
+                                Intent i = new Intent(getApplication().getBaseContext(),SiblingActivity.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                i.putExtra("redirect","monitoring");
+                                startActivity(i);
+                            }
                         }
-                        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         notificationIntent.putExtra("redirect", "monitoring");
                         PendingIntent pendingIntent = PendingIntent.getActivity(getApplication().getBaseContext(), 0,notificationIntent, 0);
                         builder.setSmallIcon(R.mipmap.ic_launcher)
@@ -195,6 +208,7 @@ public class BackgroundService extends Service {
                                 .setContentIntent(pendingIntent);
                         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                         builder.setSound(alarmSound);
+                        builder.setAutoCancel(true);
                         NotificationManager notificationManager = (NotificationManager) getApplication().getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
                         Notification notification = builder.getNotification();
                         notificationManager.notify(R.drawable.notification_template_icon_bg, notification);
@@ -208,7 +222,7 @@ public class BackgroundService extends Service {
                         if(pref_tipe.equals("2")){
                             Notification.Builder builder = new Notification.Builder(getApplication().getBaseContext());
                             Intent notificationIntent = new Intent(getApplication().getBaseContext(),CoordinatorActivity.class);
-                            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             notificationIntent.putExtra("redirect", "monitoring");
                             PendingIntent pendingIntent = PendingIntent.getActivity(getApplication().getBaseContext(), 0,notificationIntent, 0);
                             builder.setSmallIcon(R.mipmap.ic_launcher)
@@ -224,7 +238,7 @@ public class BackgroundService extends Service {
                         if(pref_tipe.equals("3")){
                             Notification.Builder builder = new Notification.Builder(getApplication().getBaseContext());
                             Intent notificationIntent = new Intent(getApplication().getBaseContext(),SiblingActivity.class);
-                            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             notificationIntent.putExtra("redirect", "monitoring");
                             PendingIntent pendingIntent = PendingIntent.getActivity(getApplication().getBaseContext(), 0,notificationIntent, 0);
                             builder.setSmallIcon(R.mipmap.ic_launcher)
@@ -266,7 +280,7 @@ public class BackgroundService extends Service {
                         if(!pref_tipe.equals("1")){
                             Notification.Builder builder = new Notification.Builder(getApplication().getBaseContext());
                             Intent notificationIntent = new Intent(getApplication().getBaseContext(),CoordinatorActivity.class);
-                            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             notificationIntent.putExtra("redirect", "monitoring");
                             PendingIntent pendingIntent = PendingIntent.getActivity(getApplication().getBaseContext(), 0,notificationIntent, 0);
                             builder.setSmallIcon(R.mipmap.ic_launcher)

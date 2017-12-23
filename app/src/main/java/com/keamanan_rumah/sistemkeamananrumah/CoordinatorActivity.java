@@ -19,7 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 public class CoordinatorActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -57,16 +57,16 @@ public class CoordinatorActivity extends AppCompatActivity
         if (redirect != null) {
             if(redirect.equals("monitoring")){
                 tx.replace(R.id.FrameCoordinator, new FragmentMonitoring());
-                Toast.makeText(CoordinatorActivity.this,redirect,Toast.LENGTH_LONG).show();
+//                Toast.makeText(CoordinatorActivity.this,redirect,Toast.LENGTH_LONG).show();
             }else
             if(redirect.equals("dashboard")){
                 tx.replace(R.id.FrameCoordinator, new FragmentDashboard());
-                Toast.makeText(CoordinatorActivity.this,redirect,Toast.LENGTH_LONG).show();
+//                Toast.makeText(CoordinatorActivity.this,redirect,Toast.LENGTH_LONG).show();
             }
         } else {
             tx.replace(R.id.FrameCoordinator, new FragmentDashboard());
 
-            Toast.makeText(CoordinatorActivity.this,redirect,Toast.LENGTH_LONG).show();
+//            Toast.makeText(CoordinatorActivity.this,redirect,Toast.LENGTH_LONG).show();
         }
         tx.commit();
         dialBox = createDialogBox();

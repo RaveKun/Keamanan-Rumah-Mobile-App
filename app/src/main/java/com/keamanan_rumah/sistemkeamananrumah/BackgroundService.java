@@ -110,7 +110,7 @@ public class BackgroundService extends Service {
                 });
             }
         };
-        timer.schedule(doAsynchronousTask, 0, 10000);
+        timer.schedule(doAsynchronousTask, 0, 5000);
         return START_STICKY;
     }
 
@@ -231,6 +231,7 @@ public class BackgroundService extends Service {
                                     .setContentIntent(pendingIntent);
                             Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                             builder.setSound(alarmSound);
+                            builder.setAutoCancel(true);
                             NotificationManager notificationManager = (NotificationManager) getApplication().getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
                             Notification notification = builder.getNotification();
                             notificationManager.notify(R.drawable.notification_template_icon_bg, notification);
@@ -247,6 +248,7 @@ public class BackgroundService extends Service {
                                     .setContentIntent(pendingIntent);
                             Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                             builder.setSound(alarmSound);
+                            builder.setAutoCancel(true);
                             NotificationManager notificationManager = (NotificationManager) getApplication().getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
                             Notification notification = builder.getNotification();
                             notificationManager.notify(R.drawable.notification_template_icon_bg, notification);
@@ -289,6 +291,7 @@ public class BackgroundService extends Service {
                                     .setContentIntent(pendingIntent);
                             Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                             builder.setSound(alarmSound);
+                            builder.setAutoCancel(true);
                             NotificationManager notificationManager = (NotificationManager) getApplication().getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
                             Notification notification = builder.getNotification();
                             notificationManager.notify(R.drawable.notification_template_icon_bg, notification);

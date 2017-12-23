@@ -129,7 +129,7 @@ public class FragmentDashboard extends Fragment {
                 });
             }
         };
-        timer.schedule(doAsynchronousTask, 0, 10000);
+        timer.schedule(doAsynchronousTask, 0, 5000);
     }
 
 

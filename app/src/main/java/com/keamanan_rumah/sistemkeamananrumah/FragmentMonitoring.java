@@ -134,7 +134,7 @@ public class FragmentMonitoring extends Fragment {
                 });
             }
         };
-        timer.schedule(doAsynchronousTask, 0, 10000);
+        timer.schedule(doAsynchronousTask, 0, 5000);
     }
 
     private class AsyncMonitoring extends AsyncTask<Void, Void, Void> {

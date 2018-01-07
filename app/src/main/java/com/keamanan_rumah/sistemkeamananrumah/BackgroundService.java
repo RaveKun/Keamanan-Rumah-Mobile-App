@@ -117,7 +117,8 @@ public class BackgroundService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        timer.cancel();
+        timer.cancel();status
+
     }
 
     private class GetJSONDataNotif extends AsyncTask<Void, Void, Void> {
